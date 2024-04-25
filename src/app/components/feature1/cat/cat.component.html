@@ -1,0 +1,61 @@
+<div #pdfDownload3>
+    <div class="page">
+        <h2 class="title">Continuous Automated Testing</h2>
+
+        <app-table [data]="table1" [identifier]="table1[0].stageDef!" [page] = "pageName"
+            (selectedValuesChange)="updateSelectedValues($event)">
+        </app-table>
+        <app-table [data]="table2" [identifier]="table2[0].stageDef!" [page] = "pageName"
+            (selectedValuesChange)="updateSelectedValues($event)">
+        </app-table>
+        <app-table [data]="table3" [identifier]="table3[0].stageDef!" [page] = "pageName"
+            (selectedValuesChange)="updateSelectedValues($event)">
+        </app-table>
+        <app-table [data]="table4" [identifier]="table4[0].stageDef!" [page] = "pageName"
+            (selectedValuesChange)="updateSelectedValues($event)">
+        </app-table>
+        <app-table [data]="table5" [identifier]="table5[0].stageDef!" [page] = "pageName"
+            (selectedValuesChange)="updateSelectedValues($event)">
+        </app-table>
+        <app-table [data]="table6" [identifier]="table6[0].stageDef!" [page] = "pageName"
+            (selectedValuesChange)="updateSelectedValues($event)">
+        </app-table>
+        <app-table [data]="table7" [identifier]="table7[0].stageDef!" [page] = "pageName"
+            (selectedValuesChange)="updateSelectedValues($event)">
+        </app-table>
+        <app-table [data]="table8" [identifier]="table8[0].stageDef!" [page] = "pageName"
+            (selectedValuesChange)="updateSelectedValues($event)">
+        </app-table>
+        <app-table [data]="table9" [identifier]="table9[0].stageDef!" [page] = "pageName"
+            (selectedValuesChange)="updateSelectedValues($event)">
+        </app-table>
+        <app-table [data]="table10" [identifier]="table10[0].stageDef!" [page] = "pageName"
+            (selectedValuesChange)="updateSelectedValues($event)">
+        </app-table>
+        <app-table [data]="table11" [identifier]="table11[0].stageDef!" [page] = "pageName"
+            (selectedValuesChange)="updateSelectedValues($event)">
+        </app-table>
+        <app-table [data]="table12" [identifier]="table12[0].stageDef!" [page] = "pageName"
+            (selectedValuesChange)="updateSelectedValues($event)">
+        </app-table>
+        <app-table [data]="table13" [identifier]="table13[0].stageDef!" [page] = "pageName"
+            (selectedValuesChange)="updateSelectedValues($event)">
+        </app-table>
+    </div>
+</div>
+<!-- <div class="text-center">
+    <a type="button" class="btn btn-secondary btn-sm me-2" [routerLink]="['/feature/ci']">Previous</a>
+
+    <button type="button" class="btn btn-primary btn-sm me-2" (click)="saveAll()">Save</button>
+    <a type="button" class="btn btn-secondary btn-sm" [routerLink]="['/feature/iac']">Next</a>
+</div> -->
+
+<div class="footer" *ngIf="showFooter1 && showFooter">
+    <div class="text-center">
+        <!-- <button (click)="downloadPdf()">Download as PDF</button> -->
+
+        <a type="button" class="btn btn-secondary btn-sm me-2" [routerLink]="['/feature1/ci']">Previous</a>
+        <button type="button" class="btn btn-primary btn-sm me-2" (click)="saveAll()">Save</button>
+        <a type="button" class="btn btn-secondary btn-sm" [routerLink]="['/feature1/iac']">Next</a>
+    </div>
+</div>

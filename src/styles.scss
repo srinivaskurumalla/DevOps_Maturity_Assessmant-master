@@ -1,0 +1,62 @@
+/* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+@import '~@fortawesome/fontawesome-free/css/all.css';
+
+html,
+body {
+    height: 99%;
+    width: 99.6%;
+    // padding: 5px;
+    background-color: aliceblue;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+.table .table-header tr th {
+    background-color: rgba(88, 77, 159, 0.263);
+}
+
+
+
+td[rowspan] {
+    vertical-align: middle;
+    text-align: center;
+    font-size: xx-large;
+    color: green;
+}
+
+.title {
+    text-align: center;
+    color: blue;
+    background-color: aliceblue !important;
+    position: relative;
+    top: 25;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.content {
+    margin-bottom: 50px;
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+}
+
+.footer {
+   // position: relative;
+    text-align: center;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: aliceblue;
+    z-index: 999;
+    padding: 0%;
+}

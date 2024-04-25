@@ -1,0 +1,26 @@
+<div #pdfDownload1>
+    <div class="page">
+        <!-- <div *ngFor="let data of scoreData">
+        {{data.item}}
+        {{data.value}}
+    </div> -->
+        <h2 class="title">Configuration Management</h2>
+        <app-table [data]="table1" [identifier]="table1[0].stageDef!" [page] = 'pageName'
+            (selectedValuesChange)="updateSelectedValues($event)">
+        </app-table>
+        <app-table [data]="table2" [identifier]="table2[0].stageDef!" [page] = 'pageName'
+            (selectedValuesChange)="updateSelectedValues($event)">
+        </app-table>
+    </div>
+
+
+    <div class="footer" *ngIf="showFooter1 && showFooter">
+        <div class="text-center">
+            <!-- <button (click)="downloadPdf()">Download as PDF</button> -->
+
+            <button type="button" class="btn btn-primary btn-sm me-2" [disabled]="selectedValues.length == 0"  (click)="saveAll()">Save</button>
+            <a type="button" class="btn btn-secondary btn-sm" [routerLink]="['/feature1/ci']">Next</a>
+        </div>
+    </div>
+</div>
+ 

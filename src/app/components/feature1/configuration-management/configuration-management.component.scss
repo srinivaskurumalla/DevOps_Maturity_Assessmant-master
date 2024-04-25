@@ -1,0 +1,23 @@
+// .table .table-header tr th {
+//     background-color: rgba(88, 77, 159, 0.263);
+// }
+
+// .title {
+//     text-align: center;
+//     color: blue;
+// }
+
+// td[rowspan] {
+//     vertical-align: middle;
+//     text-align: center;
+//     font-size: xx-large;
+//     color: green;
+// }
+
+.toast {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000; /* Ensure toast appears above other elements */
+  }
+  

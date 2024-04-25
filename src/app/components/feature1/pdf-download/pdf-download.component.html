@@ -1,0 +1,16 @@
+<div #pdfPages>
+
+    <app-configuration-management [showFooter1]="showFooter"></app-configuration-management>
+    <app-continuous-integration [showFooter1]="showFooter"></app-continuous-integration>
+    <app-cat [showFooter1]="showFooter"></app-cat>
+    <app-iac [showFooter1]="showFooter"></app-iac>
+    <app-cdd [showFooter1]="showFooter"></app-cdd>
+    <app-cm [showFooter1]="showFooter"></app-cm>
+    <app-cs [showFooter1]="showFooter"></app-cs>
+</div>
+<div class="footer">
+    <div class="text-center">
+        <button class="btn btn-primary" (click)="downloadScreenshots()">Download PDF</button>
+
+    </div>
+</div>

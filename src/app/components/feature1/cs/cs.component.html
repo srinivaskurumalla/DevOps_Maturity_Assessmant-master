@@ -1,0 +1,26 @@
+
+
+
+<div class="page">
+
+    <h2 class="title">Continuous Security</h2>
+
+    <app-table [data]="table1" [identifier]="table1[0].stageDef!" [page] = "pageName" (selectedValuesChange)="updateSelectedValues($event)">
+    </app-table>
+    <app-table [data]="table2" [identifier]="table2[0].stageDef!" [page] = "pageName" (selectedValuesChange)="updateSelectedValues($event)">
+    </app-table>
+    <app-table [data]="table3" [identifier]="table3[0].stageDef!" [page] = "pageName" (selectedValuesChange)="updateSelectedValues($event)">
+    </app-table>
+    <app-table [data]="table4" [identifier]="table4[0].stageDef!" [page] = "pageName" (selectedValuesChange)="updateSelectedValues($event)">
+    </app-table>
+    <app-table [data]="table5" [identifier]="table5[0].stageDef!" [page] = "pageName" (selectedValuesChange)="updateSelectedValues($event)">
+    </app-table>
+</div>
+
+<div class="footer" *ngIf="showFooter1 && showFooter">
+    <div class="text-center">
+        <a type="button" class="btn btn-secondary btn-sm me-2" [routerLink]="['/feature1/cm']">Previous</a>
+    
+        <button type="button" class="btn btn-primary btn-sm me-2" (click)="saveAll()">Save</button>
+    </div>
+</div>

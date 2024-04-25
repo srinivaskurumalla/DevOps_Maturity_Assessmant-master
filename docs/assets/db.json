@@ -1,0 +1,196 @@
+{
+  "centene": [
+    {
+      "id": 10101,
+      "item": "Configuration Management",
+      "identifier": "Source code management",
+      "value": 10
+    },
+    {
+      "id": 10201,
+      "item": "Configuration Management",
+      "identifier": "Source code branching strategy",
+      "value": 10
+    },
+    {
+      "id": 20301,
+      "item": "Continuous Integration",
+      "identifier": "Automating build processes using CI ",
+      "value": 10
+    },
+    {
+      "id": 20501,
+      "item": "Continuous Integration",
+      "identifier": "Notifications during CI",
+      "value": 3
+    },
+    {
+      "id": 20101,
+      "item": "Continuous Integration",
+      "identifier": "CI prerequisites",
+      "value": 1
+    },
+    {
+      "id": 20201,
+      "item": "Continuous Integration",
+      "identifier": "CI tools stack",
+      "value": 1
+    },
+    {
+      "id": 20401,
+      "item": "Continuous Integration",
+      "identifier": "Integration of developer code",
+      "value": 10
+    },
+    {
+      "id": 30101,
+      "item": "Continuous Automated Testing",
+      "identifier": "Automated Testing",
+      "value": 1
+    },
+    {
+      "id": 30201,
+      "item": "Continuous Automated Testing",
+      "identifier": "Actions taken on results from automated tests",
+      "value": 10
+    },
+    {
+      "id": 30301,
+      "item": "Continuous Automated Testing",
+      "identifier": "Unit tests.",
+      "value": 10
+    },
+    {
+      "id": 30401,
+      "item": "Continuous Automated Testing",
+      "identifier": "Unit test coverage measurement",
+      "value": 10
+    },
+    {
+      "id": 30601,
+      "item": "Continuous Automated Testing",
+      "identifier": "Scenario/functional/story test coverage",
+      "value": 10
+    },
+    {
+      "id": 30701,
+      "item": "Continuous Automated Testing",
+      "identifier": "Performance tests",
+      "value": 10
+    },
+    {
+      "id": 30901,
+      "item": "Continuous Automated Testing",
+      "identifier": "Performance test types",
+      "value": 10
+    },
+    {
+      "id": 301001,
+      "item": "Continuous Automated Testing",
+      "identifier": "Security test types",
+      "value": 10
+    },
+    {
+      "id": 301101,
+      "item": "Continuous Automated Testing",
+      "identifier": "Frequency of vulnerability scanning ",
+      "value": 10
+    },
+    {
+      "id": 301201,
+      "item": "Continuous Automated Testing",
+      "identifier": "Automated code quality review frequency ",
+      "value": 10
+    },
+    {
+      "id": 301301,
+      "item": "Continuous Automated Testing",
+      "identifier": "Penetration testing frequency",
+      "value": 10
+    },
+    {
+      "id": 30801,
+      "item": "Continuous Automated Testing",
+      "identifier": "Performance test frequency",
+      "value": 10
+    },
+    {
+      "id": 30501,
+      "item": "Continuous Automated Testing",
+      "identifier": "Frequency of running unit tests",
+      "value": 10
+    },
+    {
+      "id": 40101,
+      "item": "Infrastructure as a code",
+      "identifier": "Automated provisioning",
+      "value": 5
+    },
+    {
+      "id": 40201,
+      "item": "Infrastructure as a code",
+      "identifier": "Use of containers",
+      "value": 5
+    },
+    {
+      "id": 50101,
+      "item": "Continuous Delivery and Deployment",
+      "identifier": "Automated acceptance tests",
+      "value": 10
+    },
+    {
+      "id": 50201,
+      "item": "Continuous Delivery and Deployment",
+      "identifier": "Vendor-driven constraints",
+      "value": 10
+    },
+    {
+      "id": 50301,
+      "item": "Continuous Delivery and Deployment",
+      "identifier": "Deployment pipeline",
+      "value": 10
+    },
+    {
+      "id": 50401,
+      "item": "Continuous Delivery and Deployment",
+      "identifier": "Deployment to production",
+      "value": 10
+    },
+    {
+      "id": 50501,
+      "item": "Continuous Delivery and Deployment",
+      "identifier": "Deployment capabilities",
+      "value": 10
+    },
+    {
+      "id": 60101,
+      "item": "Continuous Monitoring",
+      "identifier": "Monitoring solutions",
+      "value": 10
+    },
+    {
+      "id": 60201,
+      "item": "Continuous Monitoring",
+      "identifier": "Monitoring application performance",
+      "value": 10
+    },
+    {
+      "id": 60301,
+      "item": "Continuous Monitoring",
+      "identifier": "Security monitoring",
+      "value": 5
+    },
+    {
+      "id": 70201,
+      "item": "Continuous Security",
+      "identifier": "Design",
+      "value": 5
+    },
+    {
+      "id": 70101,
+      "item": "Continuous Security",
+      "identifier": "Requirements",
+      "value": 5
+    }
+  ]
+}
