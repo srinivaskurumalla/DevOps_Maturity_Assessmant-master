@@ -153,8 +153,8 @@ export class CATComponent implements OnInit {
   ];
 
   // selectedValues: number[] = new Array(this.tablesData[0].length).fill(0); // Assuming all tables have the same number of rows
-  selectedValues: { id: number, practiceStage: string, item: string, identifier: string, value: number }[] = []; // Array to store selected values
-  updateSelectedValues(selectedValue: { id: number, practiceStage: string, item: string, identifier: string, value: number }) {
+  selectedValues: { id: number, practiceStage: string, item: string, identifier: string,description:string, value: number }[] = []; // Array to store selected values
+  updateSelectedValues(selectedValue: { id: number, practiceStage: string, item: string, identifier: string,description:string, value: number }) {
     // Update the selected values array with the emitted value
     const index = this.selectedValues.findIndex(item => item.identifier === selectedValue.identifier);
     selectedValue.item = 'Continuous Automated Testing'

@@ -2,6 +2,17 @@
     cursor: pointer;
 }
 .center {
+    position:fixed;
     text-align: center;
-    align-items: center;
+    bottom: 0;
+    // left: 0.2;
+    width: 80%;
+    background-color: white !important;
+    z-index: 999;
+    // padding: 0%;
+}
+
+.card {
+    height: 90%;
+    overflow: auto;
 }

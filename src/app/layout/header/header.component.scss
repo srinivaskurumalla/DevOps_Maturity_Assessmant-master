@@ -1,5 +1,5 @@
 i {
-    color: blue;
+    color: white;
     border: none;
     margin: 0px;
     border-style: none;
@@ -12,6 +12,15 @@ i {
     cursor: pointer !important;
 }
 .toolbar {
-    background-color: rgba(20, 12, 12, 0.228);
+    background: linear-gradient(90deg, #325f90, #7070ce);
+    // background-color: rgba(30, 45, 103, 0.228);
+    // background-color: rgb(50, 80, 126);
     border-radius: 10px 10px 0 0
 }
+
+.name {
+    color: white;
+}
+  
+  
+

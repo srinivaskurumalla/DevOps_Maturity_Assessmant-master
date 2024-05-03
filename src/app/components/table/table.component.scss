@@ -2,3 +2,24 @@
     border-radius: 10px !important;
     overflow: hidden;
 }
+
+
+.table-bordered>:not(caption)>*>* {
+    border-width: 0 var(--bs-border-width);
+    background-color: white;
+}
+.desc {
+    width: 600px;
+}
+.ps {
+    width: 120px;
+}
+.sc {
+    width: 100px;
+}
+.as{
+    width: 120px;
+}
+.points {
+    width: 100px;
+}

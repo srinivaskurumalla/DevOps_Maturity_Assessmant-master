@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { Feature2RoutingModule } from './feature2-routing.module';
 import { SurveyComponent } from './survey/survey.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -11,6 +12,7 @@ import { SurveyComponent } from './survey/survey.component';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     Feature2RoutingModule
   ]
 })

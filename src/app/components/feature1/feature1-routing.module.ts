@@ -13,7 +13,6 @@ import { PdfDownloadComponent } from './pdf-download/pdf-download.component';
 import { ReviewComponent } from './review/review.component';
 
 const routes: Routes = [
-  {path:'/home',component:HomeComponent,pathMatch:'full'},
   {path:'config',component:ConfigurationManagementComponent},
   {path:'ci',component:ContinuousIntegrationComponent},
   {path:'cat',component:CATComponent},

@@ -12,7 +12,6 @@ export class SidebarComponent implements OnInit {
   //selectedOption: boolean = false;
   isFeature1Route:boolean = false
   isFeature2Route:boolean = false
-  color = ''
   constructor(private router: Router,public dbService:DbService) { 
     this.router.events
     .pipe(filter((event) => event instanceof NavigationEnd))
@@ -29,14 +28,6 @@ export class SidebarComponent implements OnInit {
    
   }
  
-  // selectedItem(menuItem: string) {
-  //   this.dbService.setSelectedMenuItem(menuItem);
-  // }
-  // selectedItem(selectedItem: string): void {
-  //   debugger
-
-  //   this.color = selectedItem;
-  //   localStorage.setItem('selectedItemColor', this.color);
-  // }
+  
 
 }

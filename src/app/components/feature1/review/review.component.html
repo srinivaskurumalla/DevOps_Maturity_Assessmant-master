@@ -24,7 +24,7 @@
 
 
 
-<div class="card">
+<div class="card m-2">
   <p-table #dt [columns]="cols" [value]="mergedArray" selectionMode="multiple" [exportHeader]="'customExportHeader'"
     [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="caption">
@@ -52,7 +52,7 @@
     </ng-template>
   </p-table>
 </div>
-<div class="center m-2">
+<div class="center m-2 text-center">
 
   <button class="btn btn-danger" (click)="Exit()">Exit</button>
 </div>

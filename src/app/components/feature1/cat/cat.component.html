@@ -55,7 +55,7 @@
         <!-- <button (click)="downloadPdf()">Download as PDF</button> -->
 
         <a type="button" class="btn btn-secondary btn-sm me-2" [routerLink]="['/feature1/ci']">Previous</a>
-        <button type="button" class="btn btn-primary btn-sm me-2" (click)="saveAll()">Save</button>
+        <button type="button" class="btn btn-primary btn-sm me-2" [disabled]="selectedValues.length == 0"  (click)="saveAll()">Save</button>
         <a type="button" class="btn btn-secondary btn-sm" [routerLink]="['/feature1/iac']">Next</a>
     </div>
 </div>

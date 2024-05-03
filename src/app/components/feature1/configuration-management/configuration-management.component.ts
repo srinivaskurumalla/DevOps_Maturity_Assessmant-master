@@ -1,7 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 @Component({
   selector: 'app-configuration-management',
   templateUrl: './configuration-management.component.html',
@@ -61,8 +59,8 @@ export class ConfigurationManagementComponent implements OnInit {
   ];
 
 
-  selectedValues: { id: number, practiceStage: string, item: string, identifier: string, value: number }[] = []; // Array to store selected values
-  updateSelectedValues(selectedValue: { id: number, practiceStage: string, item: string, identifier: string, value: number }) {
+  selectedValues: { id: number, practiceStage: string, item: string, identifier: string,description:string, value: number }[] = []; // Array to store selected values
+  updateSelectedValues(selectedValue: { id: number, practiceStage: string, item: string, identifier: string,description:string, value: number }) {
     // Update the selected values array with the emitted value
     const index = this.selectedValues.findIndex(item => item.identifier === selectedValue.identifier);
     selectedValue.item = 'Configuration Management'

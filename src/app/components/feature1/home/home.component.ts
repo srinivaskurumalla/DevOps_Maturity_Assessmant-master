@@ -37,6 +37,14 @@ export class HomeComponent implements OnInit {
 
   saveSurvey() {
     console.log('devops survey form', this.devOpsSurveyForm.value);
+    this.dbService.projectData = this.devOpsSurveyForm.value
+    if (this.devOpsSurveyForm.valid) {
+      sessionStorage.setItem('devOpsForm', JSON.stringify(this.devOpsSurveyForm.value));
+      this.router.navigate(['/feature2/survey']);
+      this.dbService.isSidebarOpen = true;
+     // window.location.reload();
+
+    }
   }
   saveAssessment() {
     console.log('devops Assessment form', this.devOpsAssessmentForm.value);

@@ -66,8 +66,8 @@ export class CMComponent implements OnInit {
     {id: 60501, stageDef: 'Alerting solution', practiceStage: 'Optmized', description: '(Mature) + Alerting thresholds are easily modifiable, and we follow Site Reliability Engineering practices to ensure the proper SLO, SLI and Error Budgets are maintained.', score: 10, value: 10, tooltip: '10', name: 'val5' },
   ];
 
-  selectedValues: { id: number,practiceStage : string, item: string, identifier: string, value: number }[] = []; // Array to store selected values
-  updateSelectedValues(selectedValue: { id: number,practiceStage : string, item: string, identifier: string, value: number }) {
+  selectedValues: { id: number, practiceStage: string, item: string, identifier: string,description:string, value: number }[] = []; // Array to store selected values
+  updateSelectedValues(selectedValue: { id: number, practiceStage: string, item: string, identifier: string,description:string, value: number }) {
      // Update the selected values array with the emitted value
     const index = this.selectedValues.findIndex(item => item.identifier === selectedValue.identifier);
     selectedValue.item = 'Continuous Monitoring'

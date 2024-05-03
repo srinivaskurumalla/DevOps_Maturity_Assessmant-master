@@ -4,6 +4,8 @@ import { DbService } from 'src/app/services/db.service';
 import 'jspdf-autotable'; // Optional for table formatting
 import jsPDF from 'jspdf';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationComponent } from '../../confirmation/confirmation.component';
 interface Column {
   field: string;
   header: string;
@@ -29,11 +31,26 @@ export class ReviewComponent implements OnInit {
   projectData: any;
   achievedScore!: number
   maturityLevel!: string
-  constructor(private dbService: DbService, private router: Router) { }
+  constructor(private dbService: DbService, private router: Router, private dialog: MatDialog) { }
   data$ = this.dbService.getAllData(); // Observable returned from service
   ngOnInit(): void {
     this.projectData = this.dbService.projectData
-    this.mergedArray = JSON.parse(sessionStorage.getItem('mergedArray')!)
+
+    const { buName, projectName } = this.projectData;
+
+    const array1 = JSON.parse(sessionStorage.getItem(`${buName}|${projectName}|config`)!) || [];
+    const array2 = JSON.parse(sessionStorage.getItem(`${buName}|${projectName}|ci`)!) || [];
+    const array3 = JSON.parse(sessionStorage.getItem(`${buName}|${projectName}|cat`)!) || [];
+    const array4 = JSON.parse(sessionStorage.getItem(`${buName}|${projectName}|iac`)!) || [];
+    const array5 = JSON.parse(sessionStorage.getItem(`${buName}|${projectName}|cdd`)!) || [];
+    const array6 = JSON.parse(sessionStorage.getItem(`${buName}|${projectName}|cm`)!) || [];
+    const array7 = JSON.parse(sessionStorage.getItem(`${buName}|${projectName}|cs`)!) || [];
+
+    // Merge the arrays into a single array
+    this.mergedArray = [...array1, ...array2, ...array3, ...array4, ...array5, ...array6, ...array7];
+    sessionStorage.setItem('mergedArray',JSON.stringify( this.mergedArray))
+   
+   // this.mergedArray = JSON.parse(sessionStorage.getItem('mergedArray')!)
     console.log('merged array', this.mergedArray);
     this.achievedScore = this.mergedArray.reduce((accumulator, currentItem) => accumulator + currentItem.value, 0);
     console.log('achievedScore', this.achievedScore); // Output the sum of all values
@@ -42,9 +59,10 @@ export class ReviewComponent implements OnInit {
     console.log('maturity level', this.maturityLevel);
 
     this.cols = [
-      { field: 'practiceStage', header: 'Stage', customExportHeader: 'Stage' },
-      { field: 'item', header: 'Name', customExportHeader: 'Name' },
-      { field: 'identifier', header: 'Info', customExportHeader: 'Info' },
+      { field: 'item', header: 'Page', customExportHeader: 'Page' },
+      { field: 'identifier', header: 'Stage Definition', customExportHeader: 'Stage Definition' },
+      { field: 'practiceStage', header: 'Practice Stage', customExportHeader: 'Practice Stage' },
+      { field: 'description', header: 'Stage Info', customExportHeader: 'Stage Info' },
       { field: 'value', header: 'Score', customExportHeader: 'Score' },
 
     ];
@@ -71,7 +89,7 @@ export class ReviewComponent implements OnInit {
         var doc = new jsPDF.default('p', 'px', 'a4');
         var page = 1
         // Add header
-        const headerText = `${this.projectData.buName} - ${this.projectData.projectName}`;
+        const headerText = `${this.projectData.buName}`;
         const headerHeight = 30; // Increased header height
         const headerColor = [0, 0, 255]; // Blue color for header
         doc.setFontSize(16);
@@ -80,8 +98,36 @@ export class ReviewComponent implements OnInit {
         // doc.setTextColor(...headerColor); // Set header text color
         doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
 
+        // Main header text with larger font and blue color
+        doc.setFontSize(16);
+        doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
+        doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
 
-        const headerY = headerHeight + 30; // Y position below the header
+        // Sub-header text with smaller font and black color
+        const subHeaderText = `${this.projectData.projectName}`; // Assuming sub-header content
+        const subHeaderFontSize = 12;
+        doc.setFontSize(subHeaderFontSize);
+        doc.setTextColor(0, 0, 0); // Black color for sub-header
+        const subHeaderTextY = headerHeight + subHeaderFontSize + 5; // Adjust vertical spacing
+
+        // Get sub-header text width
+        const subHeaderTextWidth = doc.getTextWidth(subHeaderText); // Measure text width
+
+        // Calculate decoration line coordinates
+        const startX = (doc.internal.pageSize.getWidth() - subHeaderTextWidth) / 2; // Centered alignment
+        const startY = subHeaderTextY + 2; // Adjust spacing between sub-header and line
+        const endX = startX + subHeaderTextWidth;
+        const lineHeight = 1; // Line thickness
+
+        // Draw the decoration line
+        doc.setLineWidth(lineHeight);
+        doc.setDrawColor(headerColor[0], headerColor[1], 0); // Same color as header
+        doc.line(startX, startY, endX, startY);
+
+        doc.text(subHeaderText, doc.internal.pageSize.getWidth() / 2, subHeaderTextY, { align: 'center' });
+
+
+        const headerY = subHeaderTextY + 30; // Y position below the header
 
         // Add margin line
         const marginLineY = headerY + 10; // Adjust the Y position as needed
@@ -92,6 +138,7 @@ export class ReviewComponent implements OnInit {
         doc.line(marginLineXStart, marginLineY, marginLineXEnd, marginLineY); // Draw line
 
         const contentWidth = doc.internal.pageSize.getWidth();
+        doc.setFontSize(11);
 
         // Calculate the width of each text element
         const achievedScoreWidth = doc.getStringUnitWidth(this.achievedScore.toString()) * 3;
@@ -110,7 +157,7 @@ export class ReviewComponent implements OnInit {
         doc.text(`Date : ${new Date().toLocaleDateString()}`, dateX, headerY, { align: 'right' });
 
         // Set styles for the table
-        const styles = {
+        const defaultStyles = {
           font: 'Arial',
           fontSize: 12,
           fontStyle: 'normal',
@@ -118,11 +165,14 @@ export class ReviewComponent implements OnInit {
           overflow: 'linebreak', // overflow method
           cellPadding: 5, // cell padding (space between content and cell border)
           valign: 'middle', // vertical alignment
-          halign: 'center', // horizontal alignment
+          halign: 'left', // horizontal alignment
           fillColor: [255, 255, 255], // background color for the table cells
           lineWidth: 0.1, // width of table borders
           lineColor: [0, 0, 0] // color of table borders (black)
         };
+
+        // Override alignment for "Score" column to be centered
+        const scoreColumnStyle = { ...defaultStyles, halign: 'center' };
 
         // Set styles for the header row
         const headerStyles = {
@@ -130,10 +180,17 @@ export class ReviewComponent implements OnInit {
           textColor: [0, 0, 0], // black text color for header row
           fontStyle: 'bold', // bold font style for header row
         };
-
+        const tableStyles = {
+          // Apply default styles to most columns
+          styles: defaultStyles,
+          // Override styles for "Score" column (index 4)
+          columnStyles: {
+            4: scoreColumnStyle,
+          }
+        };
 
         // Mapping over the data array to exclude the 'id' field
-        const body = this.mergedArray.map(({ id, ...rest }) => Object.values(rest));
+        const body = this.mergedArray.map(({ id, item, identifier, practiceStage, description, value }) => Object.values({ item, identifier, practiceStage, description, value }));
         const addFooter = () => {
           const totalPages = 2; // Hardcoded total number of pages
           const footerHeight = 20; // Height of the footer
@@ -162,19 +219,37 @@ export class ReviewComponent implements OnInit {
           head: [this.exportColumns], // Header row
           body: body, // Table data
           startY: marginLineY + 5, // Y position to start the table (below the margin line)
-          styles: styles, // Table styles
+          styles: defaultStyles,
+          columnStyles: {
+            4: scoreColumnStyle,
+          }, // Table styles
           headStyles: headerStyles, // Header row styles
           // addPageContent: addFooter // Add footer with page numbers
         });
 
-        doc.save('products.pdf'); // Save the PDF
+        doc.save('DevOps_Scores.pdf'); // Save the PDF
       });
     });
   }
   Exit() {
-    alert('You will lose entire data')
-    sessionStorage.clear();
-    this.router.navigate(['/home'])
+    // alert('You will lose entire data')
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      data: {
+        title: 'Alert !',
+        message: 'Please download pdf before exit, You will lose entire data',
+        imageSrc : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxYzKaHgJ41PfwP9Yt6nBjxMAWLcSinuBbZJYaF-u8RA&s'
+      }
+    })
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        sessionStorage.clear();
+        this.router.navigate(['/home'])
+
+      }
+      else {
+
+      }
+    })
 
   }
 

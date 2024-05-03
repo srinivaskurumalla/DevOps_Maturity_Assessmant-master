@@ -85,8 +85,8 @@ export class ContinuousIntegrationComponent implements OnInit {
     { id: 20501, stageDef: 'Notificiions during CI', practiceStage: 'Mature', description: 'We have mechanisms in place to alert a set of team members in case the CI tool comes across either a bad build or failed unit tests.', score: 8, value: 8, tooltip: '8', name: 'val5' },
     { id: 20501, stageDef: 'Notificiions during CI', practiceStage: 'Optmized', description: 'We will stop the build process for all developers if there are build failures and/or failed unit test cases. We only restart once the failures have been addressed and resolved.', score: 10, value: 10, tooltip: '10', name: 'val5' },
   ];
-  selectedValues: { id: number, practiceStage: string, item: string, identifier: string, value: number }[] = []; // Array to store selected values
-  updateSelectedValues(selectedValue: { id: number, practiceStage: string, item: string, identifier: string, value: number }) {
+  selectedValues: { id: number, practiceStage: string, item: string, identifier: string,description:string, value: number }[] = []; // Array to store selected values
+  updateSelectedValues(selectedValue: { id: number, practiceStage: string, item: string, identifier: string,description:string, value: number }) {
     // Update the selected values array with the emitted value
     const index = this.selectedValues.findIndex(item => item.identifier === selectedValue.identifier);
     selectedValue.item = 'Continuous Integration'

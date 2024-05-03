@@ -7,9 +7,10 @@
 html,
 body {
     height: 99%;
-    width: 99.6%;
+    width: 100%;
     // padding: 5px;
-    background-color: aliceblue;
+
+    background-color: white;
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch;
 }
@@ -36,7 +37,7 @@ td[rowspan] {
 .title {
     text-align: center;
     color: blue;
-    background-color: aliceblue !important;
+    background-color: white !important;
     position: relative;
     top: 25;
     left: 0;
@@ -51,12 +52,12 @@ td[rowspan] {
 }
 
 .footer {
-   // position: relative;
+    position:fixed;
     text-align: center;
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: aliceblue;
+    background-color: white !important;
     z-index: 999;
     padding: 0%;
 }

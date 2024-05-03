@@ -1,8 +1,8 @@
-<mat-toolbar class="toolbar">
+<mat-toolbar class="toolbar" >
   <div *ngIf="!dbService.isHomeRoute" mat-icon-button class="example-icon btn" (click)="toggleSidebar()">
       <i class="fas fa-bars menuIcon"></i>
   </div>
-  <span class="ms-2" [routerLink]="'/home'">DevSecOps-Maturity-Assessment</span>
+  <span class="ms-2 name" [routerLink]="'/home'">DevSecOps-Maturity-Assessment</span>
   <span class="example-spacer"></span>
 
   <!-- <button class="btn btn-primary" *ngIf="dbService.loggedInUserRole == 'Admin'" routerLink="/admin-dashboard" >Admin Dashboard</button> -->
