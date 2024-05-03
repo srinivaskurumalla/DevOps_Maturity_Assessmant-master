@@ -10,7 +10,7 @@ import {MatListModule} from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import { HomeComponent } from '../components/feature1/home/home.component';
+import { HomeComponent } from '../components/home/home.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfigurationManagementComponent } from '../components/feature1/configuration-management/configuration-management.component';
 

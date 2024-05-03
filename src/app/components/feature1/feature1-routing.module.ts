@@ -7,7 +7,7 @@ import { CMComponent } from './cm/cm.component';
 import { ConfigurationManagementComponent } from './configuration-management/configuration-management.component';
 import { CSComponent } from './cs/cs.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from '../home/home.component';
 import { IACComponent } from './iac/iac.component';
 import { PdfDownloadComponent } from './pdf-download/pdf-download.component';
 import { ReviewComponent } from './review/review.component';

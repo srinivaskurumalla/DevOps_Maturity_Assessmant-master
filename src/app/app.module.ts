@@ -18,7 +18,6 @@ import {MatDialogModule} from '@angular/material/dialog';
     AppComponent,
     ConfirmationComponent,
    
-   // TableComponent
   ],
   imports: [
     BrowserModule,
