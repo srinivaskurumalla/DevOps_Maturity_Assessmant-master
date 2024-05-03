@@ -12,6 +12,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatTooltipModule,
     HttpClientModule,
     ToastModule,
-    MatDialogModule
+    MatDialogModule,
+    MatButtonModule,
+    
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

@@ -13,6 +13,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import { HomeComponent } from '../components/home/home.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfigurationManagementComponent } from '../components/feature1/configuration-management/configuration-management.component';
+import {MatButtonModule} from '@angular/material/button';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { ConfigurationManagementComponent } from '../components/feature1/configu
     MatTooltipModule,
     MatSidenavModule,
     ReactiveFormsModule,
+    MatButtonModule,
     RouterModule.forRoot([
       { path: 'header', component: HeaderComponent},
       { path: 'feature1/config', component: ConfigurationManagementComponent},
