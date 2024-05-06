@@ -50,6 +50,18 @@ export class EnablersSurveyComponent implements OnInit {
     ];
     this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
 
+
+    const arr = this.table[this.currentQuestionIndex].someOfTheThingsYouMightSee;
+    if (Array.isArray(arr)) {
+      this.SOTIsArray = true
+
+      arr.forEach((element: string) => {
+        this.reasonsArray.push(element)
+      });
+    }
+    else {
+      this.SOTIsArray = false
+    }
   }
 
   download(table: Question[]) {

@@ -40,7 +40,7 @@ export class SurveyComponent implements OnInit {
   SOTIsArray: boolean = false
   reasonsArray: string[] = []
   selectedData: Question[] = []
-  constructor(private dbService: DbService) { 
+  constructor(private dbService: DbService) {
   }
 
   ngOnInit(): void {
@@ -55,6 +55,17 @@ export class SurveyComponent implements OnInit {
     ];
     this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
 
+    const arr = this.table[this.currentQuestionIndex].SomeOfTheThingsYouMightHaveSee;
+    if (Array.isArray(arr)) {
+      this.SOTIsArray = true
+
+      arr.forEach((element: string) => {
+        this.reasonsArray.push(element)
+      });
+    }
+    else {
+      this.SOTIsArray = false
+    }
   }
 
   submit(table: Question[]) {
@@ -111,7 +122,11 @@ export class SurveyComponent implements OnInit {
       id: 1,
       Theme: 'Inter-Team Collaboration & Communication',
       Challenge: 'Each functional group has its own way of assessing the success or failure of work (rather than using common, cross-group measures/standards)',
-      SomeOfTheThingsYouMightHaveSee: 'Functional groups (like Development, Operations, Testers, Product Managers, Release Coordinators) may work together during the delivery of software, but they measure success of the work using different criteria.    Different areas of the organization disagree on the overall success/failure of a given delivery.    Parts of the organization believe projects are successful if they deliver exactly what was asked for, on time and on budget (even if the end users are unhappy with the system or it doesnt get used). ',
+      SomeOfTheThingsYouMightHaveSee: `
+      Functional groups (like Development, Operations, Testers, Product Managers, Release Coordinators) may work together during the delivery of software, but they measure success of the work using different criteria.
+      Different areas of the organization disagree on the overall success/failure of a given delivery.
+      Parts of the organization believe projects are successful if they deliver exactly what was asked for, on time and on budget (even if the end users are unhappy with the system or it doesn't get used).
+      `.trim().split('\n'),
       options: ['Rarely', 'Always', 'Often', 'Sometimes', 'Never'], selectedOption: ''
     },
     {
@@ -123,7 +138,7 @@ export class SurveyComponent implements OnInit {
       Functional managers don't buy in to the "collaboration and communication" approach and undermine its effectiveness.
       Territorial sensitivities between functional groups make open, honest, and effective collaboration and communication impossible.
       Once the system is deployed to production, the cross-functional team is disbanded, and each resource goes back to their "normal" reporting hierarchy.
-      `,
+      `.trim().split('\n'),
       options: ['Rarely', 'Always', 'Often', 'Sometimes', 'Never'], selectedOption: ''
     },
     {
