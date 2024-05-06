@@ -1,9 +1,9 @@
 <div class="page">
-    <div class="title">{{table[currentQuestionIndex].Theme}}</div>
+    <div class="title">{{table[currentQuestionIndex].theme}}</div>
 
     <div class="card mt-2" *ngIf="currentQuestionIndex < table.length">
         <div class="card-body">
-            <h3 class="card-title">{{table[currentQuestionIndex].id}}: {{table[currentQuestionIndex].Challenge}}</h3>
+            <h3 class="card-title">{{table[currentQuestionIndex].id}}: {{table[currentQuestionIndex].enabler}}</h3>
             <div *ngIf="SOTIsArray">
                 <ul>
                     <li *ngFor="let reason of reasonsArray">{{reason}}</li>
@@ -12,11 +12,11 @@
                 </ul>
             </div>
             <p *ngIf="!SOTIsArray">
-                {{table[currentQuestionIndex].SomeOfTheThingsYouMightHaveSee}}
+                {{table[currentQuestionIndex].someOfTheThingsYouMightSee}}
             </p>
 
             <b>I see this in my org:</b>
-            <div class="form-check form-switch" *ngFor="let option of table[currentQuestionIndex].options">
+            <div class="form-check form-switch" *ngFor="let option of table[currentQuestionIndex].progress">
                 <input class="form-check-input" type="radio" name="{{table[currentQuestionIndex].id}}-option"
                     id="{{table[currentQuestionIndex].id}}-{{option}}" value="{{option}}"
                     [(ngModel)]="table[currentQuestionIndex].selectedOption">
@@ -32,7 +32,7 @@
         <button class="btn btn-primary" (click)="previousQuestion()" *ngIf="currentQuestionIndex > 0">Previous</button>
         <button class="btn btn-success" (click)="nextQuestion()"
             *ngIf="currentQuestionIndex < table.length - 1">Next</button>
-        <button class="btn btn-success" (click)="submit(table)" 
+        <button class="btn btn-success" (click)="download(table)" 
             *ngIf="currentQuestionIndex === table.length - 1 ">Download</button>
     </div>
 </div>

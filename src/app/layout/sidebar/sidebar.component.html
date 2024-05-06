@@ -71,9 +71,15 @@
   </div>
   <div *ngIf="isFeature2Route">
     <mat-list>
-      <mat-list-item [routerLink]="['/feature2/survey']" routerLinkActive="active"
+      <mat-list-item [routerLink]="['/feature2/challenges']" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }">
         Challenges
+      </mat-list-item>
+    </mat-list>
+    <mat-list>
+      <mat-list-item [routerLink]="['/feature2/enablers']" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        Enablers
       </mat-list-item>
     </mat-list>
 

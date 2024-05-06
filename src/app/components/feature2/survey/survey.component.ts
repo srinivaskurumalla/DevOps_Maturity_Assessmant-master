@@ -1,11 +1,10 @@
-import { Component, OnInit, ApplicationRef } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
 import 'jspdf-autotable'; // Optional for table formatting
-import { Router } from '@angular/router';
 
 interface Question {
   id: number;
-  title: string;
+  Theme: string;
   Challenge: string;
   SomeOfTheThingsYouMightHaveSee: string | string[];
   options: string[];
@@ -38,7 +37,6 @@ export class SurveyComponent implements OnInit {
   surveyQuestions: any
   currentQuestionIndex = 0; // To track the currently displayed question
 
-  title: string = ''
   SOTIsArray: boolean = false
   reasonsArray: string[] = []
   selectedData: Question[] = []
@@ -48,8 +46,6 @@ export class SurveyComponent implements OnInit {
   ngOnInit(): void {
     this.projectData = this.dbService.projectData
     this.sideBarOpen = this.dbService.isSidebarOpen ? true : false
-    // this.title = this.title1
-    //this.location.reload();
     this.cols = [
       { field: 'id', header: 'Id', customExportHeader: 'Id' },
       { field: 'Challenge', header: 'Challenge', customExportHeader: 'Challenge' },
@@ -113,14 +109,14 @@ export class SurveyComponent implements OnInit {
   table: Question[] = [
     {
       id: 1,
-      title: 'Inter-Team Collaboration & Communication',
+      Theme: 'Inter-Team Collaboration & Communication',
       Challenge: 'Each functional group has its own way of assessing the success or failure of work (rather than using common, cross-group measures/standards)',
       SomeOfTheThingsYouMightHaveSee: 'Functional groups (like Development, Operations, Testers, Product Managers, Release Coordinators) may work together during the delivery of software, but they measure success of the work using different criteria.    Different areas of the organization disagree on the overall success/failure of a given delivery.    Parts of the organization believe projects are successful if they deliver exactly what was asked for, on time and on budget (even if the end users are unhappy with the system or it doesnt get used). ',
       options: ['Rarely', 'Always', 'Often', 'Sometimes', 'Never'], selectedOption: ''
     },
     {
       id: 2,
-      title: 'Inter-Team Collaboration & Communication',
+      Theme: 'Inter-Team Collaboration & Communication',
       Challenge: 'Reporting structure and/or team topology gets in the way of effective collaboration and communication ',
       SomeOfTheThingsYouMightHaveSee: `Reporting hierarchies or cross-functional rivalries make effective collaboration and communication difficult or impossible.
       There is a "them and us" mentality among functional groups.
@@ -132,7 +128,7 @@ export class SurveyComponent implements OnInit {
     },
     {
       id: 3,
-      title: 'Inter-Team Collaboration & Communication',
+      Theme: 'Inter-Team Collaboration & Communication',
       Challenge: 'Lack of effective tooling to facilitate cross-functional collaboration',
       SomeOfTheThingsYouMightHaveSee: `
       The ability of teams/functions to collaborate effectively is undermined because of a lack of good collaboration tools or poor practices around their use, including:
@@ -147,7 +143,7 @@ export class SurveyComponent implements OnInit {
     },
     {
       id: 4,
-      title: 'Inter-Team Collaboration & Communication',
+      Theme: 'Inter-Team Collaboration & Communication',
       Challenge: 'When vendors are responsible for parts of delivery, establishing effective collaboration with them is challenging',
       SomeOfTheThingsYouMightHaveSee: `
       Contract terms make effective collaboration difficult (e.g. fixed scope agreements, terms and conditions that discourage openness and collaboration, unrealistic requirements or expectations, adversarial bias in contract wording, penalty clauses, vendor or organizational processes that stifle collaboration, change is discouraged by a formal change request process).
@@ -158,7 +154,7 @@ export class SurveyComponent implements OnInit {
     },
     {
       id: 5,
-      title: 'Cross-Functional Knowledge',
+      Theme: 'Cross-Functional Knowledge',
       Challenge: `Functional teams lack knowledge and understanding of each other's practices/needs`,
       SomeOfTheThingsYouMightHaveSee: `
       Functional groups (like BAs, Developers, Testers, Operations team) lack knowledge and understanding of other functional groups, how they operate, and what they need to be successful.
@@ -170,7 +166,7 @@ export class SurveyComponent implements OnInit {
     },
     {
       id: 6,
-      title: 'Cross-Functional Knowledge',
+      Theme: 'Cross-Functional Knowledge',
 
       Challenge: `Functional teams lack knowledge and understanding about each other's roles and responsibilities`,
       SomeOfTheThingsYouMightHaveSee: `
@@ -182,7 +178,7 @@ export class SurveyComponent implements OnInit {
     },
     {
       id: 7,
-      title: 'Organizational Culture',
+      Theme: 'Organizational Culture',
       Challenge: `There is a fear of change or fear of being displaced/replaced if the required cultural and behavioral changes take place`,
       SomeOfTheThingsYouMightHaveSee: `
       Discussions about change often raise fears about how it may add to/take away/diminish people's job responsibilities (concerns around job loss, downgrading of roles, loss of  authority, etc.). 
@@ -193,7 +189,7 @@ export class SurveyComponent implements OnInit {
     },
     {
       id: 8,
-      title: 'Organizational Culture',
+      Theme: 'Organizational Culture',
       Challenge: `Functional groups don't understand or prioritize each other's needs`,
       SomeOfTheThingsYouMightHaveSee: `
       It's hard to convince people to engage in functional cross-training. 
@@ -206,7 +202,7 @@ export class SurveyComponent implements OnInit {
     },
     {
       id: 9,
-      title: 'Tooling',
+      Theme: 'Tooling',
       Challenge: `Organization doesn't follow good practices around tooling`,
       SomeOfTheThingsYouMightHaveSee: `
       Too many tools in use within or across teams.
@@ -220,7 +216,7 @@ export class SurveyComponent implements OnInit {
     },
     {
       id: 10,
-      title: 'Tooling',
+      Theme: 'Tooling',
 
       Challenge: `Poor tool selection and/or configuration`,
       SomeOfTheThingsYouMightHaveSee: `
@@ -234,7 +230,7 @@ export class SurveyComponent implements OnInit {
     },
     {
       id: 11,
-      title: 'Tooling',
+      Theme: 'Tooling',
 
       Challenge: `Tool complexity and integration challenges`,
       SomeOfTheThingsYouMightHaveSee: `
@@ -246,7 +242,7 @@ export class SurveyComponent implements OnInit {
     },
     {
       id: 12,
-      title: 'Organizational Processes',
+      Theme: 'Organizational Processes',
       Challenge: `Organization's governance and delivery processes are heavy and include many redundant and non-value-add steps
       `,
       SomeOfTheThingsYouMightHaveSee: `
@@ -259,7 +255,7 @@ export class SurveyComponent implements OnInit {
       options: ['Rarely', 'Always', 'Often', 'Sometimes', 'Never'], selectedOption: ''
     },
     {
-      id: 13, title: 'Organizational Processes',
+      id: 13, Theme: 'Organizational Processes',
 
       Challenge: `New or changing requirements create havoc for your delivery teams`,
       SomeOfTheThingsYouMightHaveSee: `
@@ -268,7 +264,7 @@ export class SurveyComponent implements OnInit {
       options: ['Rarely', 'Always', 'Often', 'Sometimes', 'Never'], selectedOption: ''
     },
     {
-      id: 14, title: 'Organizational Processes',
+      id: 14, Theme: 'Organizational Processes',
 
       Challenge: `Poor or inappropriate metrics/measurements used by organization
       `,
@@ -279,7 +275,7 @@ export class SurveyComponent implements OnInit {
       options: ['Rarely', 'Always', 'Often', 'Sometimes', 'Never'], selectedOption: ''
     },
     {
-      id: 15, title: 'Organizational Processes',
+      id: 15, Theme: 'Organizational Processes',
 
       Challenge: `Transition of work between functional groups is slow, inefficient, and error-prone`,
       SomeOfTheThingsYouMightHaveSee: `

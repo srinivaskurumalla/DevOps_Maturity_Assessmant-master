@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { EnablersSurveyComponent } from './enablers-survey/enablers-survey.component';
 import { SurveyComponent } from './survey/survey.component';
 
 const routes: Routes = [
-  {path:'survey',component:SurveyComponent}
+  {path:'challenges',component:SurveyComponent},
+  {path:'enablers',component:EnablersSurveyComponent}
 
 ];
 

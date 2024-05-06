@@ -67,7 +67,7 @@ export class HomeComponent implements OnInit {
     this.dbService.projectData = this.devOpsSurveyForm.value
     if (this.devOpsSurveyForm.valid) {
       sessionStorage.setItem('devOpsForm', JSON.stringify(this.devOpsSurveyForm.value));
-      this.router.navigate(['/feature2/survey']);
+      this.router.navigate(['/feature2/challenges']);
       this.dbService.isSidebarOpen = true;
       this.closeSurveyDialog()
 
