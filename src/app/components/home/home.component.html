@@ -42,7 +42,7 @@
       </div>
       <div class="modal-footer">
         <button  type="button" class="btn btn-secondary me-2" (click)="closeSurveyDialog()">Cancel</button>
-        <button type="submit"  class="btn btn-primary">Go</button>
+        <button type="submit" [disabled]="!devOpsSurveyForm.valid"  class="btn btn-primary">Go</button>
       </div>
     </form>
   </div>
@@ -61,7 +61,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary me-2" (click)="closeDevOpsDialog()">Cancel</button>
-        <button type="submit"  class="btn btn-primary">Go</button>
+        <button type="submit" [disabled]="!devOpsAssessmentForm.valid"  class="btn btn-primary">Go</button>
       </div>
     </form>
   </div>

@@ -12,8 +12,8 @@ i {
     cursor: pointer !important;
 }
 .toolbar {
-    background: linear-gradient(90deg, #325f90, #7070ce);
-    // background-color: rgba(30, 45, 103, 0.228);
+  //  background: linear-gradient(90deg, #325f90, #7070ce);
+     background-color: #325f90;
     // background-color: rgb(50, 80, 126);
     border-radius: 10px 10px 0 0
 }
@@ -22,5 +22,11 @@ i {
     color: white;
 }
   
+.example-spacer {
+    flex: 1 1 auto;
+  }
   
+  .homeButton {
+    background-color: #72dcac;
+  }
 

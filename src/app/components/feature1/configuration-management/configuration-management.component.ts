@@ -26,16 +26,7 @@ export class ConfigurationManagementComponent implements OnInit {
   @ViewChild('pdfDownload') pdfDownload: ElementRef | undefined;
 
 
-  // show(): void {
-  //   this.showToast = true;
-  //   setTimeout(() => this.hideToast(), 3000); // Hide toast after 3 seconds
-  // }
-
-  // hideToast(): void {
-  //   this.showToast = false;
-  // }
-
-
+ 
 
 
 

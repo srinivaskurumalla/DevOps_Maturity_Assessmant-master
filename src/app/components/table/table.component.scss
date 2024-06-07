@@ -1,9 +1,12 @@
 .table {
     border-radius: 10px !important;
     overflow: hidden;
+    margin-bottom: 0.5rem;
 }
 
-
+.tblheader th{
+    font-weight: 570 !important;
+}
 .table-bordered>:not(caption)>*>* {
     border-width: 0 var(--bs-border-width);
     background-color: white;
@@ -13,6 +16,8 @@
 }
 .ps {
     width: 120px;
+    font-weight: 570 !important;
+
 }
 .sc {
     width: 100px;

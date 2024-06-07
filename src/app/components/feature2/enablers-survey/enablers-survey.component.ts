@@ -39,7 +39,7 @@ export class EnablersSurveyComponent implements OnInit {
 
   ngOnInit(): void {
     this.projectData = this.dbService.projectData
-   // this.sideBarOpen = this.dbService.isSidebarOpen ? true : false
+    // this.sideBarOpen = this.dbService.isSidebarOpen ? true : false
     this.cols = [
       { field: 'id', header: 'Id', customExportHeader: 'Id' },
       { field: 'theme', header: 'Theme', customExportHeader: 'Theme' },
@@ -50,7 +50,16 @@ export class EnablersSurveyComponent implements OnInit {
     ];
     this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
 
+    const savedEnablers = JSON.parse(sessionStorage.getItem('enablers')!);
+    console.log('saved enablers', savedEnablers);
 
+    savedEnablers?.forEach((enabler: Question) => {
+      const currenQuestionIndex = enabler.id-1
+      if (enabler.id == this.table[currenQuestionIndex].id){
+        this.table[currenQuestionIndex].selectedOption = enabler.selectedOption
+      }
+    });
+    
     const arr = this.table[this.currentQuestionIndex].someOfTheThingsYouMightSee;
     if (Array.isArray(arr)) {
       this.SOTIsArray = true
@@ -65,12 +74,21 @@ export class EnablersSurveyComponent implements OnInit {
   }
 
   download(table: Question[]) {
+    this.save(table,false) //save data even if user directly downloads pdf
     console.log('selected options', table);
     this.selectedData = table
     console.log('selected data', this.selectedData);
 
     this.dbService.showSuccess('Update Successful')
-     this.exportPdf()
+    this.exportPdf()
+  }
+  save(table: Question[], clickOnSave:boolean) {
+
+    console.log('save enablers questions', table);
+    sessionStorage.setItem('enablers', JSON.stringify(table))
+    if(clickOnSave){
+      this.dbService.showSuccess('Data saved succesfully')
+    }
   }
   nextQuestion() {
     this.reasonsArray = []
@@ -332,7 +350,7 @@ export class EnablersSurveyComponent implements OnInit {
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
       selectedOption: ''
     },
-   
+
   ]
 
   exportPdf() {
@@ -427,7 +445,7 @@ export class EnablersSurveyComponent implements OnInit {
         };
 
         // Mapping over the data array to exclude the 'id' field
-        const body = this.selectedData.map(({ id, theme,enabler, someOfTheThingsYouMightSee, selectedOption }) => Object.values({ id, theme,enabler, someOfTheThingsYouMightSee, selectedOption }));
+        const body = this.selectedData.map(({ id, theme, enabler, someOfTheThingsYouMightSee, selectedOption }) => Object.values({ id, theme, enabler, someOfTheThingsYouMightSee, selectedOption }));
 
         (doc as any).autoTable({
           head: [this.exportColumns], // Header row

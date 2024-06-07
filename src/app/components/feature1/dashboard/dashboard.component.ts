@@ -91,11 +91,6 @@ export class DashboardComponent implements OnInit {
     console.log('aggregate', aggregatedData);
     aggregatedData.forEach(
       data => {
-       // const itemShortCut = data.item.split(' ').map(word => word[0]).join('').toLowerCase();
-
-       // console.log('short cut', itemShortCut);
-
-       // this.shortCuts.push(itemShortCut)
         this.items.push(data.item)
         this.values.push(data.value)
         this.totals.push(data.totalValue)
@@ -210,14 +205,24 @@ export class DashboardComponent implements OnInit {
             label: 'Total Score', // Label for total scores
             data: totalScores,
             
-            backgroundColor: 'red',
-            borderColor: 'white',
+            backgroundColor: '#D31B1B',
+            borderColor: 'red',
             borderWidth: 1
           },
           {
             label: 'Achieved Score', // Label for achieved scores
             data: achievedScores,
-            backgroundColor: 'green', 
+            //  backgroundColor: (context: any) => {
+            //   const achievedPercentage = context.dataset.data[context.dataIndex] / totalScores[context.dataIndex] * 100;
+            //   return this.getBarColor(achievedPercentage);
+            // },
+            backgroundColor: '#1BD334',
+            animation: {
+              duration: 1000, // Animation duration in milliseconds (adjust as needed)
+              easing: 'easeInOutQuad', // Animation easing function (choose a suitable easing effect)
+            },
+          
+           // backgroundColor: 'green', 
             borderColor: 'white',
             borderWidth: 1
           }
@@ -244,6 +249,41 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  //  componentToHex(c: number) {
+  //   const hex = c.toString(16);
+  //   return hex.length === 1 ? "0" + hex : hex;
+  // }
+  
+  //  rgbToHex(r: number, g: number, b: number): string {
+  //   return "#" + this.componentToHex(r) +this. componentToHex(g) + this. componentToHex(b);
+  // }
+  
+  //  lerp(start: number, end: number, amt: number): number {
+  //   return (1 - amt) * start + amt * end;
+  // }
+  
+  // getBarColor(achievedPercentage: number): string {
+  //   const startColor = { r: 255, g: 0, b: 0 }; // Red
+  //   const endColor = { r: 0, g: 255, b: 0 }; // Green
+  //   const percentage = achievedPercentage / 100;
+  //   const amt = this.lerp(0, 1, percentage); // Map percentage to transition amount
+  
+  //   const red = Math.round(this.lerp(startColor.r, endColor.r, amt));
+  //   const green = Math.round(this.lerp(startColor.g, endColor.g, amt));
+  //   const blue = Math.round(this.lerp(startColor.b, endColor.b, amt));
+  
+  //   return this.rgbToHex(red, green, blue);
+  // }
+  
+  getBarColor(achievedPercentage: number): string {
+    if (achievedPercentage >= 80) {
+      return 'green'; // Excellent
+    } else if (achievedPercentage >= 50) {
+      return 'yellow'; // Good
+    } else {
+      return 'red'; // Needs Improvement
+    }
+  }
 
  
 }

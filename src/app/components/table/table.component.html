@@ -1,7 +1,7 @@
 <div class="page" #pageRef >
-    <table class="table table-bordered mat-elevation-z8 mt-3">
+    <table class="table table-bordered mat-elevation-z8 ">
         <thead>
-            <tr>
+            <tr class="tblheader">
                 <th>Practice Stage</th>
                 <th>{{data[0].stageDef}}</th>
                 <th>Stage Score</th>
@@ -14,7 +14,7 @@
 
 
             <tr *ngFor="let item of data; let i = index">
-                <td class="ps"> <strong>{{ item.practiceStage }}</strong></td>
+                <td class="ps"> {{ item.practiceStage }}</td>
                 <td class="desc">{{ item.description }}</td>
                 <td class="sc">{{ item.score }}</td>
                 <td class="points">

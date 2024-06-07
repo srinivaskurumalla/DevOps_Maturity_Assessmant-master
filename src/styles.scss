@@ -36,15 +36,16 @@ td[rowspan] {
 
 .title {
     text-align: center;
-    color: blue;
+    color: rgb(63, 63, 138);
     background-color: white !important;
     position: relative;
     top: 25;
     left: 0;
     width: 100%;
     z-index: 1;
+    font-weight: bold !important;
+//font-family: Georgia, 'Times New Roman', Times, serif !important;
 }
-
 .content {
     margin-bottom: 50px;
     height: calc(100vh - 80px);

@@ -1,9 +1,9 @@
 <div class="page">
-    <div class="title">{{table[currentQuestionIndex].Theme}}</div>
+    <h2 class="title">{{table[currentQuestionIndex].Theme}}</h2>
 
     <div class="card mt-2" *ngIf="currentQuestionIndex < table.length">
         <div class="card-body">
-            <h3 class="card-title">{{table[currentQuestionIndex].id}}: {{table[currentQuestionIndex].Challenge}}</h3>
+            <h3 class="ps">{{table[currentQuestionIndex].id}}: {{table[currentQuestionIndex].Challenge}}</h3>
             <div *ngIf="SOTIsArray">
                 <ul>
                     <li *ngFor="let reason of reasonsArray">{{reason}}</li>
@@ -15,7 +15,7 @@
                 {{table[currentQuestionIndex].SomeOfTheThingsYouMightHaveSee}}
             </p>
 
-            <b>I see this in my org:</b>
+            <b class="ps">I see this in my org:</b>
             <div class="form-check form-switch" *ngFor="let option of table[currentQuestionIndex].options">
                 <input class="form-check-input" type="radio" name="{{table[currentQuestionIndex].id}}-option"
                     id="{{table[currentQuestionIndex].id}}-{{option}}" value="{{option}}"
@@ -25,14 +25,16 @@
                 </label>
             </div>
             <br>
-            <b>Selected:</b> {{table[currentQuestionIndex].selectedOption}}
+            <b class="ps">Selected:</b> {{table[currentQuestionIndex].selectedOption}}
         </div>
     </div>
     <div class="text-center">
         <button class="btn btn-primary" (click)="previousQuestion()" *ngIf="currentQuestionIndex > 0">Previous</button>
         <button class="btn btn-success" (click)="nextQuestion()"
             *ngIf="currentQuestionIndex < table.length - 1">Next</button>
-        <button class="btn btn-success" (click)="submit(table)" 
+            <button class="btn btn-success" (click)="save(table,true)" *ngIf="currentQuestionIndex === table.length - 1 ">Save</button>
+
+        <button class="btn btn-danger" (click)="submit(table)" 
             *ngIf="currentQuestionIndex === table.length - 1 ">Download</button>
     </div>
 </div>

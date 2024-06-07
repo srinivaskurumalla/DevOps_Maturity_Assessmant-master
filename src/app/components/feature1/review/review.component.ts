@@ -236,7 +236,7 @@ export class ReviewComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       data: {
         title: 'Alert !',
-        message: 'Please download pdf before exit, You will lose entire data',
+        message: 'Please download the PDF before exiting. All data, including saved data, will be lost.',
         imageSrc : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxYzKaHgJ41PfwP9Yt6nBjxMAWLcSinuBbZJYaF-u8RA&s'
       }
     })

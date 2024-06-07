@@ -1,6 +1,6 @@
-<mat-toolbar class="toolbar" >
+<mat-toolbar class="toolbar">
   <div *ngIf="!dbService.isHomeRoute" mat-icon-button class="example-icon btn" (click)="toggleSidebar()">
-      <i class="fas fa-bars menuIcon"></i>
+    <i class="fas fa-bars menuIcon"></i>
   </div>
   <span class="ms-2 name" [routerLink]="'/home'">DevSecOps-Maturity-Assessment</span>
   <span class="example-spacer"></span>
@@ -20,11 +20,13 @@
     </button>
   </mat-menu> -->
 
-  <!-- <button mat-icon-button (click)="onLogOutClick()" class="example-icon button-hand">
-    <i class="fas fa-sign-out-alt" [matTooltip]="'Click to Logout'" ></i>
-  </button>
- -->
+  <div *ngIf="!dbService.isHomeRoute"  mat-icon-button (click)="home()" class="btn homeButton example-icon button-hand name">
+   <b>       <mat-icon>home</mat-icon>
+   </b> </div>
 
+    <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>home</mat-icon>
+    </button> -->
 
 
 </mat-toolbar>

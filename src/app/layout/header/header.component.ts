@@ -22,6 +22,9 @@ export class HeaderComponent implements OnInit {
   toggleSidebar() {
     this.sidebarToggle.emit();
   }
-
+home(){
+  sessionStorage.clear()
+  this.router.navigate(['/home'])
+}
 
 }

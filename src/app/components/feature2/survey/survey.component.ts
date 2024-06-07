@@ -55,6 +55,15 @@ export class SurveyComponent implements OnInit {
     ];
     this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
 
+    const savedChallenges  = JSON.parse(sessionStorage.getItem('challenges')!)
+    console.log('saved challenges', savedChallenges);
+
+    savedChallenges?.forEach((challenge: Question) => {
+      const currenQuestionIndex = challenge.id-1
+      if (challenge.id == this.table[currenQuestionIndex].id){
+        this.table[currenQuestionIndex].selectedOption = challenge.selectedOption
+      }
+    });
     const arr = this.table[this.currentQuestionIndex].SomeOfTheThingsYouMightHaveSee;
     if (Array.isArray(arr)) {
       this.SOTIsArray = true
@@ -69,6 +78,8 @@ export class SurveyComponent implements OnInit {
   }
 
   submit(table: Question[]) {
+    this.save(table,false)  //save data even if user directly downloads pdf
+    console.log('selected options', table);
     console.log('selected options', table);
     this.selectedData = table
     console.log('selected data', this.selectedData);
@@ -116,7 +127,14 @@ export class SurveyComponent implements OnInit {
       }
     }
   }
+  save(table: Question[], clickOnSave:boolean) {
 
+    console.log('save challenges questions', table);
+    sessionStorage.setItem('challenges', JSON.stringify(table))
+    if(clickOnSave){
+      this.dbService.showSuccess('Data saved succesfully')
+    }
+  }
   table: Question[] = [
     {
       id: 1,
