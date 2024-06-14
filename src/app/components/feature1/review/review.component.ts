@@ -142,7 +142,7 @@ export class ReviewComponent implements OnInit {
           const maturityLevelX = (contentWidth - maturityLevelWidth) / 2;
           const dateX = contentWidth - dateWidth - 10;
           doc.setTextColor(headerColor[0], headerColor[1], 0);
-          doc.text(`Maturity Level : ${this.devOpsPracticeMaturity.toString()}`, maturityLevelX, headerY, { align: 'center' });
+          //doc.text(`Maturity Level : ${this.devOpsPracticeMaturity.toString()}`, maturityLevelX, headerY, { align: 'center' });
           doc.text(`Achieved Score : ${this.achievedScore.toString()}`, achievedScoreX, headerY, { align: 'left' });
           doc.text(`Date : ${new Date().toLocaleDateString()}`, dateX, headerY, { align: 'right' });
 
@@ -177,7 +177,7 @@ export class ReviewComponent implements OnInit {
             font: 'Arial',
             fontSize: 12,
             fontStyle: 'bold',
-            textColor: [0, 0, 0],
+            textColor: [0, 0, 255],
             overflow: 'linebreak',
             cellPadding: 5,
             valign: 'middle',
@@ -190,7 +190,7 @@ export class ReviewComponent implements OnInit {
           // Add the first table
           doc.setFontSize(14);
           doc.setFont('', '', 'bold'); // Set font style to bold
-          doc.text(`DevOps Assessment Score`, doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
+          doc.text(`DevOps Maturity Score`, doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
           currentY += 10; // Add some space below the title
           
           if (this.table1 && this.table1.length) {
@@ -206,7 +206,7 @@ export class ReviewComponent implements OnInit {
             // Add the new row with totals
             const maturityRow = ['DevOps Practice Maturity', `${this.devOpsPracticeMaturity.toString()}`]; // Replace with your actual totals
             (doc as any).autoTable({
-              startY: (doc as any).lastAutoTable.finalY, // Adjust vertical spacing as needed
+              startY: (doc as any).lastAutoTable.finalY + 10, // Adjust vertical spacing as needed
               body: [maturityRow],
               styles: maturityColor,
              // columnStyles: ['20', '50', ], // Optional: Set column widths if needed

@@ -192,7 +192,7 @@ export class DashboardComponent implements OnInit {
             // Add the first table
             doc.setFontSize(14);
             doc.setFont('', '', 'bold'); // Set font style to bold
-            doc.text(`DevOps Assessment Score`, doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
+            doc.text(`DevOps Readiness Score`, doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
             currentY += 10; // Add some space below the title
             if (this.ceTable1 && this.ceTable1.length) {
               (doc as any).autoTable({
@@ -218,7 +218,7 @@ export class DashboardComponent implements OnInit {
 
             if (this.ceTable2 && this.ceTable2.length) {
               (doc as any).autoTable({
-                head: [['Legend','Range','Description']],
+                head: [['Legend','Score Range','Description']],
                 body: this.ceTable2.map(row => [row.status, row.avg,row.description]),
                 startY: currentY,
                 styles: defaultStyles,
