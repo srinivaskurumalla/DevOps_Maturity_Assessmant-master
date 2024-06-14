@@ -107,10 +107,15 @@ export class DashboardComponent implements OnInit {
   }
 
   exportPdf() {
-    // if (this.mergedArray.length == 0) {
-    //   this.dbService.showWarn('Please choose scores');
-    //   return
-    // }
+    if ( this.challengesScore?.length == 0 || this.challengesScore == null ) {
+      this.dbService.showWarn('Please choose challenges');
+      return
+    }
+    if (this.enablerScore?.length == 0 || this.enablerScore == null ) {
+      this.dbService.showWarn('Please choose enablers');
+      return
+    }
+   
     import('jspdf').then((jsPDF) => {
       import('jspdf-autotable').then(() => {
         const doc = new jsPDF.default('p', 'px', 'a4');
