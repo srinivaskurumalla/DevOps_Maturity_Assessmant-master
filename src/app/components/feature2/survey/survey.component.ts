@@ -86,7 +86,7 @@ export class SurveyComponent implements OnInit {
     console.log('selected data', this.selectedData);
 
     this.dbService.showSuccess('Update Successful')
-    this.exportPdf()
+    //this.exportPdf()
   }
 
   nextQuestion() {
@@ -403,114 +403,114 @@ export class SurveyComponent implements OnInit {
 
   ];
 
-  exportPdf() {
-    import('jspdf').then((jsPDF) => {
-      import('jspdf-autotable').then(() => {
-        var doc = new jsPDF.default('p', 'px', 'a4');
-        // Add header
-        const headerText = `${this.projectData.buName}`;
-        const headerHeight = 30; // Increased header height
-        const headerColor = [0, 0, 255]; // Blue color for header
-        doc.setFontSize(16);
-        doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]); // Set header text color
+  // exportPdf() {
+  //   import('jspdf').then((jsPDF) => {
+  //     import('jspdf-autotable').then(() => {
+  //       var doc = new jsPDF.default('p', 'px', 'a4');
+  //       // Add header
+  //       const headerText = `${this.projectData.buName}`;
+  //       const headerHeight = 30; // Increased header height
+  //       const headerColor = [0, 0, 255]; // Blue color for header
+  //       doc.setFontSize(16);
+  //       doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]); // Set header text color
 
-        // doc.setTextColor(...headerColor); // Set header text color
-        doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
+  //       // doc.setTextColor(...headerColor); // Set header text color
+  //       doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
 
-        // Main header text with larger font and blue color
-        doc.setFontSize(16);
-        doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
-        doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
+  //       // Main header text with larger font and blue color
+  //       doc.setFontSize(16);
+  //       doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
+  //       doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
 
-        // Sub-header text with smaller font and black color
-        const subHeaderText = `${this.projectData.projectName}`; // Assuming sub-header content
-        const subHeaderFontSize = 12;
-        doc.setFontSize(subHeaderFontSize);
-        doc.setTextColor(0, 0, 0); // Black color for sub-header
-        const subHeaderTextY = headerHeight + subHeaderFontSize + 5; // Adjust vertical spacing
+  //       // Sub-header text with smaller font and black color
+  //       const subHeaderText = `${this.projectData.projectName}`; // Assuming sub-header content
+  //       const subHeaderFontSize = 12;
+  //       doc.setFontSize(subHeaderFontSize);
+  //       doc.setTextColor(0, 0, 0); // Black color for sub-header
+  //       const subHeaderTextY = headerHeight + subHeaderFontSize + 5; // Adjust vertical spacing
 
-        // Get sub-header text width
-        const subHeaderTextWidth = doc.getTextWidth(subHeaderText); // Measure text width
+  //       // Get sub-header text width
+  //       const subHeaderTextWidth = doc.getTextWidth(subHeaderText); // Measure text width
 
-        // Calculate decoration line coordinates
-        const startX = (doc.internal.pageSize.getWidth() - subHeaderTextWidth) / 2; // Centered alignment
-        const startY = subHeaderTextY + 2; // Adjust spacing between sub-header and line
-        const endX = startX + subHeaderTextWidth;
-        const lineHeight = 1; // Line thickness
+  //       // Calculate decoration line coordinates
+  //       const startX = (doc.internal.pageSize.getWidth() - subHeaderTextWidth) / 2; // Centered alignment
+  //       const startY = subHeaderTextY + 2; // Adjust spacing between sub-header and line
+  //       const endX = startX + subHeaderTextWidth;
+  //       const lineHeight = 1; // Line thickness
 
-        // Draw the decoration line
-        doc.setLineWidth(lineHeight);
-        doc.setDrawColor(headerColor[0], headerColor[1], 0); // Same color as header
-        doc.line(startX, startY, endX, startY);
+  //       // Draw the decoration line
+  //       doc.setLineWidth(lineHeight);
+  //       doc.setDrawColor(headerColor[0], headerColor[1], 0); // Same color as header
+  //       doc.line(startX, startY, endX, startY);
 
-        doc.text(subHeaderText, doc.internal.pageSize.getWidth() / 2, subHeaderTextY, { align: 'center' });
+  //       doc.text(subHeaderText, doc.internal.pageSize.getWidth() / 2, subHeaderTextY, { align: 'center' });
 
 
-        const headerY = subHeaderTextY + 30; // Y position below the header
+  //       const headerY = subHeaderTextY + 30; // Y position below the header
 
-        // Add margin line
-        const marginLineY = headerY + 10; // Adjust the Y position as needed
-        const marginLineXStart = 10;
-        const marginLineXEnd = doc.internal.pageSize.getWidth() - 10;
-        doc.setLineWidth(0.5); // Set line width
-        doc.setDrawColor(0); // Set line color to black
-        doc.line(marginLineXStart, marginLineY, marginLineXEnd, marginLineY); // Draw line
+  //       // Add margin line
+  //       const marginLineY = headerY + 10; // Adjust the Y position as needed
+  //       const marginLineXStart = 10;
+  //       const marginLineXEnd = doc.internal.pageSize.getWidth() - 10;
+  //       doc.setLineWidth(0.5); // Set line width
+  //       doc.setDrawColor(0); // Set line color to black
+  //       doc.line(marginLineXStart, marginLineY, marginLineXEnd, marginLineY); // Draw line
 
-        const contentWidth = doc.internal.pageSize.getWidth();
-        doc.setFontSize(11);
+  //       const contentWidth = doc.internal.pageSize.getWidth();
+  //       doc.setFontSize(11);
 
-        // Calculate the width of each text element
-        const dateWidth = doc.getStringUnitWidth(Date.now().toString()) * 3;
+  //       // Calculate the width of each text element
+  //       const dateWidth = doc.getStringUnitWidth(Date.now().toString()) * 3;
 
-        // Calculate the starting X position for each text element
-        // const maturityLevelX = (contentWidth - maturityLevelWidth) / 2; // Center aligned
-        const dateX = contentWidth - dateWidth - 10; // Right aligned
-        doc.setTextColor(headerColor[0], headerColor[1], 0); // Set header text color
+  //       // Calculate the starting X position for each text element
+  //       // const maturityLevelX = (contentWidth - maturityLevelWidth) / 2; // Center aligned
+  //       const dateX = contentWidth - dateWidth - 10; // Right aligned
+  //       doc.setTextColor(headerColor[0], headerColor[1], 0); // Set header text color
 
-        doc.text(`Date : ${new Date().toLocaleDateString()}`, dateX, headerY, { align: 'right' });
+  //       doc.text(`Date : ${new Date().toLocaleDateString()}`, dateX, headerY, { align: 'right' });
 
-        // Set styles for the table
-        const defaultStyles = {
-          font: 'Arial',
-          fontSize: 12,
-          fontStyle: 'normal',
-          textColor: [0, 0, 0], // black text color
-          overflow: 'linebreak', // overflow method
-          cellPadding: 5, // cell padding (space between content and cell border)
-          valign: 'middle', // vertical alignment
-          halign: 'left', // horizontal alignment
-          fillColor: [255, 255, 255], // background color for the table cells
-          lineWidth: 0.1, // width of table borders
-          lineColor: [0, 0, 0] // color of table borders (black)
-        };
+  //       // Set styles for the table
+  //       const defaultStyles = {
+  //         font: 'Arial',
+  //         fontSize: 12,
+  //         fontStyle: 'normal',
+  //         textColor: [0, 0, 0], // black text color
+  //         overflow: 'linebreak', // overflow method
+  //         cellPadding: 5, // cell padding (space between content and cell border)
+  //         valign: 'middle', // vertical alignment
+  //         halign: 'left', // horizontal alignment
+  //         fillColor: [255, 255, 255], // background color for the table cells
+  //         lineWidth: 0.1, // width of table borders
+  //         lineColor: [0, 0, 0] // color of table borders (black)
+  //       };
 
-        // Override alignment for "Score" column to be centered
-        const scoreColumnStyle = { ...defaultStyles, halign: 'center' };
+  //       // Override alignment for "Score" column to be centered
+  //       const scoreColumnStyle = { ...defaultStyles, halign: 'center' };
 
-        // Set styles for the header row
-        const headerStyles = {
-          fillColor: [200, 200, 200], // background color for the header row
-          textColor: [0, 0, 0], // black text color for header row
-          fontStyle: 'bold', // bold font style for header row
-        };
+  //       // Set styles for the header row
+  //       const headerStyles = {
+  //         fillColor: [200, 200, 200], // background color for the header row
+  //         textColor: [0, 0, 0], // black text color for header row
+  //         fontStyle: 'bold', // bold font style for header row
+  //       };
 
-        // Mapping over the data array to exclude the 'id' field
-        const body = this.selectedData.map(({ id, challenge, someOfTheThingsYouMightHaveSee, selectedOption }) => Object.values({ id, challenge, someOfTheThingsYouMightHaveSee, selectedOption }));
+  //       // Mapping over the data array to exclude the 'id' field
+  //       const body = this.selectedData.map(({ id, challenge, someOfTheThingsYouMightHaveSee, selectedOption }) => Object.values({ id, challenge, someOfTheThingsYouMightHaveSee, selectedOption }));
 
-        (doc as any).autoTable({
-          head: [this.exportColumns], // Header row
-          body: body, // Table data
-          startY: marginLineY + 5, // Y position to start the table (below the margin line)
-          styles: defaultStyles,
-          columnStyles: {
-            4: scoreColumnStyle,
-          }, // Table styles
-          headStyles: headerStyles, // Header row styles
-          // addPageContent: addFooter // Add footer with page numbers
-        });
+  //       (doc as any).autoTable({
+  //         head: [this.exportColumns], // Header row
+  //         body: body, // Table data
+  //         startY: marginLineY + 5, // Y position to start the table (below the margin line)
+  //         styles: defaultStyles,
+  //         columnStyles: {
+  //           4: scoreColumnStyle,
+  //         }, // Table styles
+  //         headStyles: headerStyles, // Header row styles
+  //         // addPageContent: addFooter // Add footer with page numbers
+  //       });
 
-        doc.save('Challenges.pdf'); // Save the PDF
-      });
-    });
-  }
+  //       doc.save('Challenges.pdf'); // Save the PDF
+  //     });
+  //   });
+  // }
 }

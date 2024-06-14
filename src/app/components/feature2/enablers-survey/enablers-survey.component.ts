@@ -82,7 +82,7 @@ export class EnablersSurveyComponent implements OnInit {
     console.log('selected data', this.selectedData);
 
     this.dbService.showSuccess('Update Successful')
-    this.exportPdf()
+    //this.exportPdf()
   }
   save(table: Question[], clickOnSave: boolean) {
 
@@ -420,115 +420,115 @@ export class EnablersSurveyComponent implements OnInit {
 
   ]
 
-  exportPdf() {
-    import('jspdf').then((jsPDF) => {
-      import('jspdf-autotable').then(() => {
-        var doc = new jsPDF.default('p', 'px', 'a4');
+  // exportPdf() {
+  //   import('jspdf').then((jsPDF) => {
+  //     import('jspdf-autotable').then(() => {
+  //       var doc = new jsPDF.default('p', 'px', 'a4');
 
-        const headerText = `${this.projectData.buName}`;
-        const headerHeight = 30;
-        const headerColor = [0, 0, 255];
-        doc.setFontSize(16);
-        doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
-        doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
+  //       const headerText = `${this.projectData.buName}`;
+  //       const headerHeight = 30;
+  //       const headerColor = [0, 0, 255];
+  //       doc.setFontSize(16);
+  //       doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
+  //       doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
 
-        doc.setFontSize(16);
-        doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
-        doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
+  //       doc.setFontSize(16);
+  //       doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
+  //       doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
 
-        const subHeaderText = `${this.projectData.projectName}`;
-        const subHeaderFontSize = 12;
-        doc.setFontSize(subHeaderFontSize);
-        doc.setTextColor(0, 0, 0);
-        const subHeaderTextY = headerHeight + subHeaderFontSize + 5;
+  //       const subHeaderText = `${this.projectData.projectName}`;
+  //       const subHeaderFontSize = 12;
+  //       doc.setFontSize(subHeaderFontSize);
+  //       doc.setTextColor(0, 0, 0);
+  //       const subHeaderTextY = headerHeight + subHeaderFontSize + 5;
 
-        const subHeaderTextWidth = doc.getTextWidth(subHeaderText);
-        const startX = (doc.internal.pageSize.getWidth() - subHeaderTextWidth) / 2;
-        const startY = subHeaderTextY + 2;
-        const endX = startX + subHeaderTextWidth;
-        const lineHeight = 1;
-        doc.setLineWidth(lineHeight);
-        doc.setDrawColor(headerColor[0], headerColor[1], 0);
-        doc.line(startX, startY, endX, startY);
+  //       const subHeaderTextWidth = doc.getTextWidth(subHeaderText);
+  //       const startX = (doc.internal.pageSize.getWidth() - subHeaderTextWidth) / 2;
+  //       const startY = subHeaderTextY + 2;
+  //       const endX = startX + subHeaderTextWidth;
+  //       const lineHeight = 1;
+  //       doc.setLineWidth(lineHeight);
+  //       doc.setDrawColor(headerColor[0], headerColor[1], 0);
+  //       doc.line(startX, startY, endX, startY);
 
-        doc.text(subHeaderText, doc.internal.pageSize.getWidth() / 2, subHeaderTextY, { align: 'center' });
+  //       doc.text(subHeaderText, doc.internal.pageSize.getWidth() / 2, subHeaderTextY, { align: 'center' });
 
-        const headerY = subHeaderTextY + 30;
+  //       const headerY = subHeaderTextY + 30;
 
-        const marginLineY = headerY + 10;
-        const marginLineXStart = 10;
-        const marginLineXEnd = doc.internal.pageSize.getWidth() - 10;
-        doc.setLineWidth(0.5);
-        doc.setDrawColor(0);
-        doc.line(marginLineXStart, marginLineY, marginLineXEnd, marginLineY);
+  //       const marginLineY = headerY + 10;
+  //       const marginLineXStart = 10;
+  //       const marginLineXEnd = doc.internal.pageSize.getWidth() - 10;
+  //       doc.setLineWidth(0.5);
+  //       doc.setDrawColor(0);
+  //       doc.line(marginLineXStart, marginLineY, marginLineXEnd, marginLineY);
 
-        const contentWidth = doc.internal.pageSize.getWidth();
-        doc.setFontSize(11);
+  //       const contentWidth = doc.internal.pageSize.getWidth();
+  //       doc.setFontSize(11);
 
-        const dateWidth = doc.getStringUnitWidth(Date.now().toString()) * 3;
-        const dateX = contentWidth - dateWidth - 10;
-        doc.setTextColor(headerColor[0], headerColor[1], 0);
-        doc.text(`Date : ${new Date().toLocaleDateString()}`, dateX, headerY, { align: 'right' });
+  //       const dateWidth = doc.getStringUnitWidth(Date.now().toString()) * 3;
+  //       const dateX = contentWidth - dateWidth - 10;
+  //       doc.setTextColor(headerColor[0], headerColor[1], 0);
+  //       doc.text(`Date : ${new Date().toLocaleDateString()}`, dateX, headerY, { align: 'right' });
 
-        const defaultStyles = {
-          font: 'Arial',
-          fontSize: 12,
-          fontStyle: 'normal',
-          textColor: [0, 0, 0],
-          overflow: 'linebreak',
-          cellPadding: 5,
-          valign: 'middle',
-          halign: 'left',
-          fillColor: [255, 255, 255],
-          lineWidth: 0.1,
-          lineColor: [0, 0, 0]
-        };
+  //       const defaultStyles = {
+  //         font: 'Arial',
+  //         fontSize: 12,
+  //         fontStyle: 'normal',
+  //         textColor: [0, 0, 0],
+  //         overflow: 'linebreak',
+  //         cellPadding: 5,
+  //         valign: 'middle',
+  //         halign: 'left',
+  //         fillColor: [255, 255, 255],
+  //         lineWidth: 0.1,
+  //         lineColor: [0, 0, 0]
+  //       };
 
-        const scoreColumnStyle = { ...defaultStyles, halign: 'center' };
+  //       const scoreColumnStyle = { ...defaultStyles, halign: 'center' };
 
-        const headerStyles = {
-          fillColor: [200, 200, 200],
-          textColor: [0, 0, 0],
-          fontStyle: 'bold',
-        };
+  //       const headerStyles = {
+  //         fillColor: [200, 200, 200],
+  //         textColor: [0, 0, 0],
+  //         fontStyle: 'bold',
+  //       };
 
-        const body = this.selectedData.map(({ id, theme, enabler, someOfTheThingsYouMightSee, selectedOption }) => Object.values({ id, theme, enabler, someOfTheThingsYouMightSee, selectedOption }));
+  //       const body = this.selectedData.map(({ id, theme, enabler, someOfTheThingsYouMightSee, selectedOption }) => Object.values({ id, theme, enabler, someOfTheThingsYouMightSee, selectedOption }));
 
-        (doc as any).autoTable({
-          head: [this.exportColumns],
-          body: body,
-          startY: marginLineY + 5,
-          styles: defaultStyles,
-          columnStyles: {
-            4: scoreColumnStyle,
-          },
-          headStyles: headerStyles,
-        });
+  //       (doc as any).autoTable({
+  //         head: [this.exportColumns],
+  //         body: body,
+  //         startY: marginLineY + 5,
+  //         styles: defaultStyles,
+  //         columnStyles: {
+  //           4: scoreColumnStyle,
+  //         },
+  //         headStyles: headerStyles,
+  //       });
 
-        const addFooter = (totalPages: number) => {
-          const marginLineXStart = 10;
-          const marginLineXEnd = doc.internal.pageSize.getWidth() - 10;
-          for (let i = 1; i <= totalPages; i++) {
-            doc.setPage(i);
-            const pageWidth = doc.internal.pageSize.getWidth();
-            const pageHeight = doc.internal.pageSize.getHeight();
-            const xOffset = 10;
-            const yOffset = pageHeight - 10;
-            doc.setFontSize(10);
-            doc.setTextColor(0);
-            doc.text(`Page ${i} of ${totalPages}`, pageWidth - xOffset, yOffset, { align: 'right' });
-            doc.setLineWidth(0.5);
-            doc.setDrawColor(0);
-            doc.line(marginLineXStart, pageHeight - 20, marginLineXEnd, pageHeight - 20);
-          }
-        };
+  //       const addFooter = (totalPages: number) => {
+  //         const marginLineXStart = 10;
+  //         const marginLineXEnd = doc.internal.pageSize.getWidth() - 10;
+  //         for (let i = 1; i <= totalPages; i++) {
+  //           doc.setPage(i);
+  //           const pageWidth = doc.internal.pageSize.getWidth();
+  //           const pageHeight = doc.internal.pageSize.getHeight();
+  //           const xOffset = 10;
+  //           const yOffset = pageHeight - 10;
+  //           doc.setFontSize(10);
+  //           doc.setTextColor(0);
+  //           doc.text(`Page ${i} of ${totalPages}`, pageWidth - xOffset, yOffset, { align: 'right' });
+  //           doc.setLineWidth(0.5);
+  //           doc.setDrawColor(0);
+  //           doc.line(marginLineXStart, pageHeight - 20, marginLineXEnd, pageHeight - 20);
+  //         }
+  //       };
 
-        const totalPages = doc.internal.pages.length - 1;
-        addFooter(totalPages);
+  //       const totalPages = doc.internal.pages.length - 1;
+  //       addFooter(totalPages);
 
-        doc.save('Enablers.pdf');
-      });
-    });
-  }
+  //       doc.save('Enablers.pdf');
+  //     });
+  //   });
+  // }
 
 }
