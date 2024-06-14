@@ -21,9 +21,9 @@ export class DashboardComponent implements OnInit {
   table2: any = [];
   sumAchievedScore: number = 0;
   devOpsPracticeMaturity: string = '';
-  
-  constructor(private dbService: DbService) {}
-  
+
+  constructor(private dbService: DbService) { }
+
   ngOnInit(): void {
     this.table1 = [
       { dpp: 'Configuration Management', achievedScore: 0, totalScore: 20 },
@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
     console.log('merged array', this.mergedArray);
 
     const sumsMap: { [item: string]: number } = {};
-    
+
     // Iterate over the data array and accumulate sums based on item
     this.mergedArray?.forEach((score: any) => {
       const item = score.item;
@@ -130,8 +130,21 @@ export class DashboardComponent implements OnInit {
     this.RenderChart('bar', 'barchart', this.values, this.totals);
   }
 
+  findPercentage(achievedScore: number, totalScore: number) {
+    return (achievedScore / totalScore) * 100
+  }
   RenderChart(type: any, id: string, achievedScores: number[], totalScores: number[]) {
+    // Calculate the achieved percentages
+    let achievedPercentages = achievedScores.map((score, index) =>
+      this.findPercentage(score, totalScores[index])
+    );
+
+    // Get the colors for each bar based on the achieved percentage
+    let barColors = achievedPercentages.map(percentage =>
+      this.getBarColor(percentage)
+    );
     new Chart(id, {
+
       type: type,
       data: {
         labels: this.items,
@@ -139,14 +152,14 @@ export class DashboardComponent implements OnInit {
           {
             label: 'Total Score',
             data: totalScores,
-            backgroundColor: '#D31B1B',
-            borderColor: 'red',
+            backgroundColor: '#4a8cc7',
+            borderColor: '#1066b3',
             borderWidth: 1
           },
           {
             label: 'Achieved Score',
             data: achievedScores,
-            backgroundColor: '#1BD334',
+            backgroundColor: barColors,
             borderColor: 'white',
             borderWidth: 1
           }
@@ -178,12 +191,12 @@ export class DashboardComponent implements OnInit {
   }
 
   getBarColor(achievedPercentage: number): string {
-    if (achievedPercentage >= 80) {
+    if (achievedPercentage >= 50) {
       return 'green';
-    } else if (achievedPercentage >= 50) {
+    } else if (achievedPercentage >= 25) {
       return 'yellow';
     } else {
-      return 'red';
+      return 'orange';
     }
   }
 

@@ -63,7 +63,7 @@ export class DashboardComponent implements OnInit {
     this.ceTable2 = [
       { status: 'Not Ready', description: 'There are many more challenges to the adoption of DevOps than enablers.',avg:'-4 to -2' },
       { status: 'Early Days', description: 'There are indications of changes being planned/discussed that will promote enablers and reduce challenges.',avg:'-2 to -0.5' },
-      { status: 'Cancelling', description: 'The challenges present in the organization are cancelling the positive impact from enablers.' ,avg:'-0.5 to 0.5'},
+      { status: 'Challenging', description: 'The challenges present in the organization are challenging the positive impact from enablers.' ,avg:'-0.5 to 0.5'},
       { status: 'Moving in Right Direction', description: 'Enabling initiatives are slightly outweighing the challenges.' ,avg:'0.5 to 1.5'},
       { status: 'Gaining Momentum', description: 'Planned initiatives are close to completion, and in fact, some have already yielded positive results with enablers overcoming challenges.' ,avg:'1.5 to 2.5'},
       { status: 'Strong', description: 'There is a culture, an attitude, and an understanding of good practices that can propel DevOps introduction in the organization.',avg:'2.5 above' },
@@ -367,7 +367,7 @@ assignStatus(score:number):string{
     return 'Early Days'
   }
   else if(score >= -0.5 && score < 0.5){
-    return 'Cancelling'
+    return 'Challenging'
   }
   else if(score >= 0.5 && score < 1.5){
     return 'Moving in Right Direction'

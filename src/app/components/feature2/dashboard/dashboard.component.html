@@ -22,7 +22,7 @@
                 <td [ngClass]="{
                     'NotReady': tbl.enablersAverage - tbl.challengeAverage < -2,
                     'EarlyDays': tbl.enablersAverage - tbl.challengeAverage >= -2 && tbl.enablersAverage - tbl.challengeAverage < -0.5,
-                    'Cancelling': tbl.enablersAverage - tbl.challengeAverage >= -0.5 && tbl.enablersAverage - tbl.challengeAverage < 0.5,
+                    'Challenging': tbl.enablersAverage - tbl.challengeAverage >= -0.5 && tbl.enablersAverage - tbl.challengeAverage < 0.5,
                     'MIRD': tbl.enablersAverage - tbl.challengeAverage >= 0.5 && tbl.enablersAverage - tbl.challengeAverage < 1.5,
                     'GM': tbl.enablersAverage - tbl.challengeAverage >= 1.5 && tbl.enablersAverage - tbl.challengeAverage < 2.5,
                     'Strong': tbl.enablersAverage - tbl.challengeAverage >= 2.5
@@ -48,7 +48,7 @@
                 <td [ngClass]="{
                     'NotReady': tbl.status === 'Not Ready',
                     'EarlyDays': tbl.status === 'Early Days',
-                    'Cancelling': tbl.status === 'Cancelling',
+                    'Challenging': tbl.status === 'Challenging',
                     'MIRD': tbl.status === 'Moving in Right Direction',
                     'GM': tbl.status === 'Gaining Momentum',
                     'Strong': tbl.status === 'Strong'
