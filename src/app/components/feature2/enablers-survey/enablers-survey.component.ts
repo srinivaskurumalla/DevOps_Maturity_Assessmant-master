@@ -9,6 +9,7 @@ interface Question {
   someOfTheThingsYouMightSee: string | string[];
   progress: string[];
   selectedOption: string; // To store the selected option for each question
+  score: number
 }
 interface Column {
   field: string;
@@ -35,6 +36,7 @@ export class EnablersSurveyComponent implements OnInit {
   cols!: Column[];
   exportColumns!: ExportColumn[];
 
+
   constructor(private dbService: DbService) { }
 
   ngOnInit(): void {
@@ -54,12 +56,12 @@ export class EnablersSurveyComponent implements OnInit {
     console.log('saved enablers', savedEnablers);
 
     savedEnablers?.forEach((enabler: Question) => {
-      const currenQuestionIndex = enabler.id-1
-      if (enabler.id == this.table[currenQuestionIndex].id){
+      const currenQuestionIndex = enabler.id - 1
+      if (enabler.id == this.table[currenQuestionIndex].id) {
         this.table[currenQuestionIndex].selectedOption = enabler.selectedOption
       }
     });
-    
+
     const arr = this.table[this.currentQuestionIndex].someOfTheThingsYouMightSee;
     if (Array.isArray(arr)) {
       this.SOTIsArray = true
@@ -74,7 +76,7 @@ export class EnablersSurveyComponent implements OnInit {
   }
 
   download(table: Question[]) {
-    this.save(table,false) //save data even if user directly downloads pdf
+    this.save(table, false) //save data even if user directly downloads pdf
     console.log('selected options', table);
     this.selectedData = table
     console.log('selected data', this.selectedData);
@@ -82,11 +84,57 @@ export class EnablersSurveyComponent implements OnInit {
     this.dbService.showSuccess('Update Successful')
     this.exportPdf()
   }
-  save(table: Question[], clickOnSave:boolean) {
+  save(table: Question[], clickOnSave: boolean) {
+
+    sessionStorage.setItem('enablerScores', JSON.stringify(table))
+    const progressScoreMap: { [progressOption: string]: number } = {
+      'Yes': 4,
+      'Close to completion': 3,
+      'Work is underway': 2,
+      'Being planned': 1,
+      'No': 0
+    };
+    const newTable: any = {};
+    let themeCount: any = {}; // Object to track the number of elements per theme
+
+    table.forEach(element => {
+      const theme = element.theme;
+      const progressOption = element.selectedOption;
+      const score = progressScoreMap[progressOption] || 0; // Default score to 0 if undefined
+      element.score = score
+      // Initialize the sum for the theme if it doesn't exist yet
+      if (!newTable[theme]) {
+        newTable[theme] = 0;
+      }
+
+      // Add the score to the corresponding theme in the new table
+      newTable[theme] += score;
+
+      // Initialize count for the theme if it doesn't exist yet
+      if (!themeCount[theme]) {
+        themeCount[theme] = 0;
+      }
+
+      // Increment count for the current theme
+      themeCount[theme]++;
+    });
+
+    // Calculate average for each theme
+    for (const theme in newTable) {
+      if (themeCount[theme] > 0) { // Avoid division by zero
+        newTable[theme] /= themeCount[theme];
+        newTable[theme] = newTable[theme].toFixed(2); // Limit to 2 decimal places
+
+      } else {
+        newTable[theme] = 0; // No elements for theme, set average to 0
+      }
+    }
+    console.log('new table enablers', newTable);
+    sessionStorage.setItem('enablersAverage', JSON.stringify(newTable))
 
     console.log('save enablers questions', table);
     sessionStorage.setItem('enablers', JSON.stringify(table))
-    if(clickOnSave){
+    if (clickOnSave) {
       this.dbService.showSuccess('Data saved succesfully')
     }
   }
@@ -139,7 +187,8 @@ export class EnablersSurveyComponent implements OnInit {
       Set-up of feedback mechanisms that allow proactive improvement of communication standards.
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 2,
@@ -151,7 +200,8 @@ export class EnablersSurveyComponent implements OnInit {
       In projects with cross-functional teams, a project kick-off activity event is a mandatory step where resources are made aware of their responsibilities.
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 3,
@@ -163,7 +213,8 @@ export class EnablersSurveyComponent implements OnInit {
       In some cases, dedicated permanent product teams have been formed and their performance is being measured. Based on their outcomes, the management team has plans to replicate this team topology across the organization.
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 4,
@@ -174,7 +225,8 @@ export class EnablersSurveyComponent implements OnInit {
       There is an organization-wide (or at least a team-level) commitment underway (or has been completed) to shorten feedback cycles between functions. This stance is applicable to work being completed by either in-house teams or external vendors.
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 5,
@@ -186,7 +238,8 @@ export class EnablersSurveyComponent implements OnInit {
       For full transparency, vendors may be asked to share their process and delivery principles and to agree to penalties if agreed upon SLAs are not respected.
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 6,
@@ -198,7 +251,8 @@ export class EnablersSurveyComponent implements OnInit {
       Training is provided (or is being provided) to non-DevOps teams and leadership so they understand how to work with DevOps teams. 
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 7,
@@ -209,7 +263,8 @@ export class EnablersSurveyComponent implements OnInit {
       Teams that have had success with DevOps-related enhancements are expected to educate/mentor those who are in the earlier stages of experimenting with DevOps principles.
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 8,
@@ -221,7 +276,8 @@ export class EnablersSurveyComponent implements OnInit {
       HR is responsible for/assists in creating messaging that sets the right expectations for those who will be impacted by highlighting the benefits of the change to the organization and the effected resource.
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 9,
@@ -232,7 +288,8 @@ export class EnablersSurveyComponent implements OnInit {
       Leadership is clear about the direction being taken and makes adapting to changing practices a mandatory requirement for all resources.
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 10,
@@ -244,7 +301,8 @@ export class EnablersSurveyComponent implements OnInit {
       Teams are actively trying to using the same tools for their delivery pipelines. 
             `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 11,
@@ -256,7 +314,8 @@ export class EnablersSurveyComponent implements OnInit {
       As much as possible, configuration of tools using default settings is preferred over customizing them. Default out- of-the-box configuration of tools is rarely changed. 
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 12,
@@ -268,7 +327,8 @@ export class EnablersSurveyComponent implements OnInit {
       Organizationally, software delivery teams are expected to share components they make with others (when appropriate).
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 13,
@@ -279,7 +339,8 @@ export class EnablersSurveyComponent implements OnInit {
       Just-Enough and Just-Right documentation is completed as part of every delivery. The documentation is usually completed as a cross-functional collaborative exercise. In an ideal situation, the teams use auto-process documentation tools.
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 14,
@@ -290,7 +351,8 @@ export class EnablersSurveyComponent implements OnInit {
       The delivery processes are continually evaluated against their performance related data, and areas for improvement are proactively found and worked on.
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 15,
@@ -302,7 +364,8 @@ export class EnablersSurveyComponent implements OnInit {
       The ability to automate processes has become part of the technology teams' guiding principles.
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 16,
@@ -315,7 +378,8 @@ export class EnablersSurveyComponent implements OnInit {
       Application and Enterprise Architecture teams ensure the architecture is flexible enough to accommodate changes with minimal side effects (like massive rework or introduction of technical debt).
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 17,
@@ -326,7 +390,8 @@ export class EnablersSurveyComponent implements OnInit {
       Developers use consistent naming conventions, follow code design principles like SOLID, unit test, run integration tests with mocking, and adhere to good source management plans.
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 18,
@@ -337,7 +402,8 @@ export class EnablersSurveyComponent implements OnInit {
       Testers take a multi-perspective approach for establishing a test strategy and use automation where possible.  
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
     {
       id: 19,
@@ -348,7 +414,8 @@ export class EnablersSurveyComponent implements OnInit {
       Infrastructure teams version, test, build, and deploy using IaC and support setting up pre-configured systems and networks.
       `.trim().split('\n'),
       progress: ['Yes', 'No', 'Being Planned', 'Work is underway', 'Close to completion'],
-      selectedOption: ''
+      selectedOption: '',
+      score: 0
     },
 
   ]
@@ -357,110 +424,111 @@ export class EnablersSurveyComponent implements OnInit {
     import('jspdf').then((jsPDF) => {
       import('jspdf-autotable').then(() => {
         var doc = new jsPDF.default('p', 'px', 'a4');
-        // Add header
+
         const headerText = `${this.projectData.buName}`;
-        const headerHeight = 30; // Increased header height
-        const headerColor = [0, 0, 255]; // Blue color for header
-        doc.setFontSize(16);
-        doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]); // Set header text color
-
-        // doc.setTextColor(...headerColor); // Set header text color
-        doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
-
-        // Main header text with larger font and blue color
+        const headerHeight = 30;
+        const headerColor = [0, 0, 255];
         doc.setFontSize(16);
         doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
         doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
 
-        // Sub-header text with smaller font and black color
-        const subHeaderText = `${this.projectData.projectName}`; // Assuming sub-header content
+        doc.setFontSize(16);
+        doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
+        doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
+
+        const subHeaderText = `${this.projectData.projectName}`;
         const subHeaderFontSize = 12;
         doc.setFontSize(subHeaderFontSize);
-        doc.setTextColor(0, 0, 0); // Black color for sub-header
-        const subHeaderTextY = headerHeight + subHeaderFontSize + 5; // Adjust vertical spacing
+        doc.setTextColor(0, 0, 0);
+        const subHeaderTextY = headerHeight + subHeaderFontSize + 5;
 
-        // Get sub-header text width
-        const subHeaderTextWidth = doc.getTextWidth(subHeaderText); // Measure text width
-
-        // Calculate decoration line coordinates
-        const startX = (doc.internal.pageSize.getWidth() - subHeaderTextWidth) / 2; // Centered alignment
-        const startY = subHeaderTextY + 2; // Adjust spacing between sub-header and line
+        const subHeaderTextWidth = doc.getTextWidth(subHeaderText);
+        const startX = (doc.internal.pageSize.getWidth() - subHeaderTextWidth) / 2;
+        const startY = subHeaderTextY + 2;
         const endX = startX + subHeaderTextWidth;
-        const lineHeight = 1; // Line thickness
-
-        // Draw the decoration line
+        const lineHeight = 1;
         doc.setLineWidth(lineHeight);
-        doc.setDrawColor(headerColor[0], headerColor[1], 0); // Same color as header
+        doc.setDrawColor(headerColor[0], headerColor[1], 0);
         doc.line(startX, startY, endX, startY);
 
         doc.text(subHeaderText, doc.internal.pageSize.getWidth() / 2, subHeaderTextY, { align: 'center' });
 
+        const headerY = subHeaderTextY + 30;
 
-        const headerY = subHeaderTextY + 30; // Y position below the header
-
-        // Add margin line
-        const marginLineY = headerY + 10; // Adjust the Y position as needed
+        const marginLineY = headerY + 10;
         const marginLineXStart = 10;
         const marginLineXEnd = doc.internal.pageSize.getWidth() - 10;
-        doc.setLineWidth(0.5); // Set line width
-        doc.setDrawColor(0); // Set line color to black
-        doc.line(marginLineXStart, marginLineY, marginLineXEnd, marginLineY); // Draw line
+        doc.setLineWidth(0.5);
+        doc.setDrawColor(0);
+        doc.line(marginLineXStart, marginLineY, marginLineXEnd, marginLineY);
 
         const contentWidth = doc.internal.pageSize.getWidth();
         doc.setFontSize(11);
 
-        // Calculate the width of each text element
         const dateWidth = doc.getStringUnitWidth(Date.now().toString()) * 3;
-
-        // Calculate the starting X position for each text element
-        // const maturityLevelX = (contentWidth - maturityLevelWidth) / 2; // Center aligned
-        const dateX = contentWidth - dateWidth - 10; // Right aligned
-        doc.setTextColor(headerColor[0], headerColor[1], 0); // Set header text color
-
+        const dateX = contentWidth - dateWidth - 10;
+        doc.setTextColor(headerColor[0], headerColor[1], 0);
         doc.text(`Date : ${new Date().toLocaleDateString()}`, dateX, headerY, { align: 'right' });
 
-        // Set styles for the table
         const defaultStyles = {
           font: 'Arial',
           fontSize: 12,
           fontStyle: 'normal',
-          textColor: [0, 0, 0], // black text color
-          overflow: 'linebreak', // overflow method
-          cellPadding: 5, // cell padding (space between content and cell border)
-          valign: 'middle', // vertical alignment
-          halign: 'left', // horizontal alignment
-          fillColor: [255, 255, 255], // background color for the table cells
-          lineWidth: 0.1, // width of table borders
-          lineColor: [0, 0, 0] // color of table borders (black)
+          textColor: [0, 0, 0],
+          overflow: 'linebreak',
+          cellPadding: 5,
+          valign: 'middle',
+          halign: 'left',
+          fillColor: [255, 255, 255],
+          lineWidth: 0.1,
+          lineColor: [0, 0, 0]
         };
 
-        // Override alignment for "Score" column to be centered
         const scoreColumnStyle = { ...defaultStyles, halign: 'center' };
 
-        // Set styles for the header row
         const headerStyles = {
-          fillColor: [200, 200, 200], // background color for the header row
-          textColor: [0, 0, 0], // black text color for header row
-          fontStyle: 'bold', // bold font style for header row
+          fillColor: [200, 200, 200],
+          textColor: [0, 0, 0],
+          fontStyle: 'bold',
         };
 
-        // Mapping over the data array to exclude the 'id' field
         const body = this.selectedData.map(({ id, theme, enabler, someOfTheThingsYouMightSee, selectedOption }) => Object.values({ id, theme, enabler, someOfTheThingsYouMightSee, selectedOption }));
 
         (doc as any).autoTable({
-          head: [this.exportColumns], // Header row
-          body: body, // Table data
-          startY: marginLineY + 5, // Y position to start the table (below the margin line)
+          head: [this.exportColumns],
+          body: body,
+          startY: marginLineY + 5,
           styles: defaultStyles,
           columnStyles: {
             4: scoreColumnStyle,
-          }, // Table styles
-          headStyles: headerStyles, // Header row styles
-          // addPageContent: addFooter // Add footer with page numbers
+          },
+          headStyles: headerStyles,
         });
 
-        doc.save('Enablers.pdf'); // Save the PDF
+        const addFooter = (totalPages: number) => {
+          const marginLineXStart = 10;
+          const marginLineXEnd = doc.internal.pageSize.getWidth() - 10;
+          for (let i = 1; i <= totalPages; i++) {
+            doc.setPage(i);
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const xOffset = 10;
+            const yOffset = pageHeight - 10;
+            doc.setFontSize(10);
+            doc.setTextColor(0);
+            doc.text(`Page ${i} of ${totalPages}`, pageWidth - xOffset, yOffset, { align: 'right' });
+            doc.setLineWidth(0.5);
+            doc.setDrawColor(0);
+            doc.line(marginLineXStart, pageHeight - 20, marginLineXEnd, pageHeight - 20);
+          }
+        };
+
+        const totalPages = doc.internal.pages.length - 1;
+        addFooter(totalPages);
+
+        doc.save('Enablers.pdf');
       });
     });
   }
+
 }

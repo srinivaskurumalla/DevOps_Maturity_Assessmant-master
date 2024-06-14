@@ -21,8 +21,7 @@
 <ng-template #loading>Loading data...</ng-template>
 <button class="btn btn-success" (click)="exportToPDF()">Download</button>
  -->
-
-
+ 
 
 <div class="card m-2">
   <p-table #dt [columns]="cols" [value]="mergedArray" selectionMode="multiple" [exportHeader]="'customExportHeader'"
@@ -32,7 +31,6 @@
         <i class="fa fa-file-pdf-o" (click)="exportPdf()" [matTooltip]="'Download PDF'"
           style="font-size:30px;color:red"></i>
 
-        <!-- <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"></button> -->
       </div>
     </ng-template>
 
@@ -53,6 +51,7 @@
   </p-table>
 </div>
 <div class="center m-2 text-center">
+ 
 
   <button class="btn btn-danger" (click)="Exit()">Exit</button>
 </div>

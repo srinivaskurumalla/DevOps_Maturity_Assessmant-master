@@ -1,9 +1,9 @@
 <div class="page">
-    <h2 class="title">{{table[currentQuestionIndex].Theme}}</h2>
+    <h2 class="title">{{table[currentQuestionIndex].theme}}</h2>
 
     <div class="card mt-2" *ngIf="currentQuestionIndex < table.length">
         <div class="card-body">
-            <h3 class="ps">{{table[currentQuestionIndex].id}}: {{table[currentQuestionIndex].Challenge}}</h3>
+            <h3 class="ps">{{table[currentQuestionIndex].id}}: {{table[currentQuestionIndex].challenge}}</h3>
             <div *ngIf="SOTIsArray">
                 <ul>
                     <li *ngFor="let reason of reasonsArray">{{reason}}</li>
@@ -12,7 +12,7 @@
                 </ul>
             </div>
             <p *ngIf="!SOTIsArray">
-                {{table[currentQuestionIndex].SomeOfTheThingsYouMightHaveSee}}
+                {{table[currentQuestionIndex].someOfTheThingsYouMightHaveSee}}
             </p>
 
             <b class="ps">I see this in my org:</b>

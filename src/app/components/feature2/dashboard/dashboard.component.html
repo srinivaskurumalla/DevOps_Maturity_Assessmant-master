@@ -1,0 +1,64 @@
+<div class="flex m-4">
+    <i class="fa fa-file-pdf-o" (click)="exportPdf()" [matTooltip]="'Download PDF'"
+        style="font-size:30px;color:red"></i>
+
+</div>
+
+<div class="container">
+    <table class="styled-table table mt-5 table-bordered w-75 mx-auto">
+        <thead>
+            <tr>
+                <th>Theme</th>
+                <th>Challenges</th>
+                <th>Enablers</th>
+                <th>Readiness Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let tbl of ceTable1">
+                <td>{{tbl.theme}}</td>
+                <td>{{tbl.challengeAverage}}</td>
+                <td>{{tbl.enablersAverage}}</td>
+                <td [ngClass]="{
+                    'NotReady': tbl.enablersAverage - tbl.challengeAverage < -2,
+                    'EarlyDays': tbl.enablersAverage - tbl.challengeAverage >= -2 && tbl.enablersAverage - tbl.challengeAverage < -0.5,
+                    'Cancelling': tbl.enablersAverage - tbl.challengeAverage >= -0.5 && tbl.enablersAverage - tbl.challengeAverage < 0.5,
+                    'MIRD': tbl.enablersAverage - tbl.challengeAverage >= 0.5 && tbl.enablersAverage - tbl.challengeAverage < 1.5,
+                    'GM': tbl.enablersAverage - tbl.challengeAverage >= 1.5 && tbl.enablersAverage - tbl.challengeAverage < 2.5,
+                    'Strong': tbl.enablersAverage - tbl.challengeAverage >= 2.5
+                  }">
+                    {{ (tbl.enablersAverage - tbl.challengeAverage).toFixed(2) }}
+                </td>
+
+
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="styled-table table mt-5 table-bordered w-75 mx-auto">
+        <!-- <thead>
+            <tr>
+                <th class="col-width-1">Maturity Level</th>
+                <th class="col-width-2">Description</th>
+                <th class="col-width-3">Score</th>
+            </tr>
+        </thead> -->
+        <tbody>
+            <tr *ngFor="let tbl of ceTable2; ">
+                <td [ngClass]="{
+                    'NotReady': tbl.status === 'Not Ready',
+                    'EarlyDays': tbl.status === 'Early Days',
+                    'Cancelling': tbl.status === 'Cancelling',
+                    'MIRD': tbl.status === 'Moving in Right Direction',
+                    'GM': tbl.status === 'Gaining Momentum',
+                    'Strong': tbl.status === 'Strong'
+                }" class="col-width-1">{{tbl.status}}</td>
+
+
+
+                <td class="col-width-2">{{tbl.description}}</td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>

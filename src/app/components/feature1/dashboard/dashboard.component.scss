@@ -2,3 +2,14 @@
 //     width: 400px !important;
 //     height: 400px !important;
 // }
+.bold {
+    font-weight: bold;
+}
+
+.chart-container {
+    width: 75%;
+    max-width: 800px;
+    height: 400px; /* Set a fixed height */
+    position: relative;
+}
+ 

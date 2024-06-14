@@ -16,6 +16,7 @@ import { IACComponent } from './iac/iac.component';
 import { CSComponent } from './cs/cs.component';
 import { TableComponent } from '../table/table.component';
 import { ReviewComponent } from './review/review.component';
+import { ScoresTableComponent } from './scores-table/scores-table.component';
 
 
 @NgModule({
@@ -33,21 +34,20 @@ import { ReviewComponent } from './review/review.component';
     CSComponent,
     TableComponent,
     ReviewComponent,
-    //IACComponent,
-    //CDDComponent,
-   // CMComponent,
+    ScoresTableComponent,
+
 
   ],
   imports: [
     CommonModule,
     Feature1RoutingModule,
-   FormsModule,
-   ReactiveFormsModule,
-   MatTooltipModule,
-   ToastModule,
-   TableModule
+    FormsModule,
+    ReactiveFormsModule,
+    MatTooltipModule,
+    ToastModule,
+    TableModule
   ]
 })
-export class Feature1Module { 
-  constructor(){}
+export class Feature1Module {
+  constructor() { }
 }

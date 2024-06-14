@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
 // import * as jsPDF from 'jspdf';
 import 'jspdf-autotable'; // Optional for table formatting
@@ -6,6 +6,8 @@ import jsPDF from 'jspdf';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from '../../confirmation/confirmation.component';
+import { fontVariant } from 'html2canvas/dist/types/css/property-descriptors/font-variant';
+import { fontWeight } from 'html2canvas/dist/types/css/property-descriptors/font-weight';
 interface Column {
   field: string;
   header: string;
@@ -23,6 +25,10 @@ interface ExportColumn {
   styleUrls: ['./review.component.scss']
 })
 export class ReviewComponent implements OnInit {
+
+  table1: any[] = [];
+  table2: any[] = [];
+  devOpsPracticeMaturity!: string;
   data: any[] = []
   cols!: Column[];
 
@@ -30,11 +36,14 @@ export class ReviewComponent implements OnInit {
   mergedArray: any[] = []
   projectData: any;
   achievedScore!: number
-  maturityLevel!: string
   constructor(private dbService: DbService, private router: Router, private dialog: MatDialog) { }
-  data$ = this.dbService.getAllData(); // Observable returned from service
+  //data$ = this.dbService.getAllData(); // Observable returned from service
   ngOnInit(): void {
     this.projectData = this.dbService.projectData
+    debugger
+    this.table1 = this.dbService.getTable1();
+    this.table2 = this.dbService.getTable2();
+    console.log('tbl', this.table1);
 
     const { buName, projectName } = this.projectData;
 
@@ -48,18 +57,18 @@ export class ReviewComponent implements OnInit {
 
     // Merge the arrays into a single array
     this.mergedArray = [...array1, ...array2, ...array3, ...array4, ...array5, ...array6, ...array7];
-    sessionStorage.setItem('mergedArray',JSON.stringify( this.mergedArray))
-   
-   // this.mergedArray = JSON.parse(sessionStorage.getItem('mergedArray')!)
+    sessionStorage.setItem('mergedArray', JSON.stringify(this.mergedArray))
+
+    // this.mergedArray = JSON.parse(sessionStorage.getItem('mergedArray')!)
     console.log('merged array', this.mergedArray);
     this.achievedScore = this.mergedArray.reduce((accumulator, currentItem) => accumulator + currentItem.value, 0);
     console.log('achievedScore', this.achievedScore); // Output the sum of all values
 
-    this.maturityLevel = this.assignLabel(this.achievedScore)
-    console.log('maturity level', this.maturityLevel);
+    this.devOpsPracticeMaturity = this.assignLabel(this.achievedScore)
+    console.log('maturity level', this.devOpsPracticeMaturity);
 
     this.cols = [
-      { field: 'item', header: 'Page', customExportHeader: 'Page' },
+      { field: 'item', header: 'Practice', customExportHeader: 'Practice' },
       { field: 'identifier', header: 'Stage Definition', customExportHeader: 'Stage Definition' },
       { field: 'practiceStage', header: 'Practice Stage', customExportHeader: 'Practice Stage' },
       { field: 'description', header: 'Stage Info', customExportHeader: 'Stage Info' },
@@ -84,160 +93,248 @@ export class ReviewComponent implements OnInit {
 
 
   exportPdf() {
+    if (this.mergedArray.length == 0) {
+      this.dbService.showWarn('Please choose scores');
+      return
+    }
     import('jspdf').then((jsPDF) => {
       import('jspdf-autotable').then(() => {
-        var doc = new jsPDF.default('p', 'px', 'a4');
-        var page = 1
-        // Add header
+        const doc = new jsPDF.default('p', 'px', 'a4');
         const headerText = `${this.projectData.buName}`;
-        const headerHeight = 30; // Increased header height
-        const headerColor = [0, 0, 255]; // Blue color for header
-        doc.setFontSize(16);
-        doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]); // Set header text color
+        const headerHeight = 30;
+        const headerColor = [0, 0, 255];
 
-        // doc.setTextColor(...headerColor); // Set header text color
-        doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
+        const addHeader = () => {
+          // Add header
+          doc.setFontSize(16);
+          doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
+          doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
 
-        // Main header text with larger font and blue color
-        doc.setFontSize(16);
-        doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
-        doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
+          const subHeaderText = `${this.projectData.projectName}`;
+          const subHeaderFontSize = 12;
+          doc.setFontSize(subHeaderFontSize);
+          doc.setTextColor(0, 0, 0);
+          const subHeaderTextY = headerHeight + subHeaderFontSize + 5;
+          const subHeaderTextWidth = doc.getTextWidth(subHeaderText);
+          const startX = (doc.internal.pageSize.getWidth() - subHeaderTextWidth) / 2;
+          const startY = subHeaderTextY + 2;
+          const endX = startX + subHeaderTextWidth;
+          const lineHeight = 1;
+          doc.setLineWidth(lineHeight);
+          doc.setDrawColor(headerColor[0], headerColor[1], 0);
+          doc.line(startX, startY, endX, startY);
+          doc.text(subHeaderText, doc.internal.pageSize.getWidth() / 2, subHeaderTextY, { align: 'center' });
 
-        // Sub-header text with smaller font and black color
-        const subHeaderText = `${this.projectData.projectName}`; // Assuming sub-header content
-        const subHeaderFontSize = 12;
-        doc.setFontSize(subHeaderFontSize);
-        doc.setTextColor(0, 0, 0); // Black color for sub-header
-        const subHeaderTextY = headerHeight + subHeaderFontSize + 5; // Adjust vertical spacing
+          const headerY = subHeaderTextY + 30;
+          const marginLineY = headerY + 10;
+          const marginLineXStart = 10;
+          const marginLineXEnd = doc.internal.pageSize.getWidth() - 10;
+          doc.setLineWidth(0.5);
+          doc.setDrawColor(0);
+          doc.line(marginLineXStart, marginLineY, marginLineXEnd, marginLineY);
 
-        // Get sub-header text width
-        const subHeaderTextWidth = doc.getTextWidth(subHeaderText); // Measure text width
+          const contentWidth = doc.internal.pageSize.getWidth();
+          doc.setFontSize(11);
+          const achievedScoreWidth = doc.getStringUnitWidth(this.achievedScore.toString()) * 3;
+          const maturityLevelWidth = doc.getStringUnitWidth(this.devOpsPracticeMaturity.toString()) * 3;
+          const dateWidth = doc.getStringUnitWidth(Date.now().toString()) * 3;
+          const achievedScoreX = 10;
+          const maturityLevelX = (contentWidth - maturityLevelWidth) / 2;
+          const dateX = contentWidth - dateWidth - 10;
+          doc.setTextColor(headerColor[0], headerColor[1], 0);
+          doc.text(`Maturity Level : ${this.devOpsPracticeMaturity.toString()}`, maturityLevelX, headerY, { align: 'center' });
+          doc.text(`Achieved Score : ${this.achievedScore.toString()}`, achievedScoreX, headerY, { align: 'left' });
+          doc.text(`Date : ${new Date().toLocaleDateString()}`, dateX, headerY, { align: 'right' });
 
-        // Calculate decoration line coordinates
-        const startX = (doc.internal.pageSize.getWidth() - subHeaderTextWidth) / 2; // Centered alignment
-        const startY = subHeaderTextY + 2; // Adjust spacing between sub-header and line
-        const endX = startX + subHeaderTextWidth;
-        const lineHeight = 1; // Line thickness
-
-        // Draw the decoration line
-        doc.setLineWidth(lineHeight);
-        doc.setDrawColor(headerColor[0], headerColor[1], 0); // Same color as header
-        doc.line(startX, startY, endX, startY);
-
-        doc.text(subHeaderText, doc.internal.pageSize.getWidth() / 2, subHeaderTextY, { align: 'center' });
-
-
-        const headerY = subHeaderTextY + 30; // Y position below the header
-
-        // Add margin line
-        const marginLineY = headerY + 10; // Adjust the Y position as needed
-        const marginLineXStart = 10;
-        const marginLineXEnd = doc.internal.pageSize.getWidth() - 10;
-        doc.setLineWidth(0.5); // Set line width
-        doc.setDrawColor(0); // Set line color to black
-        doc.line(marginLineXStart, marginLineY, marginLineXEnd, marginLineY); // Draw line
-
-        const contentWidth = doc.internal.pageSize.getWidth();
-        doc.setFontSize(11);
-
-        // Calculate the width of each text element
-        const achievedScoreWidth = doc.getStringUnitWidth(this.achievedScore.toString()) * 3;
-        const maturityLevelWidth = doc.getStringUnitWidth(this.maturityLevel.toString()) * 3;
-        const dateWidth = doc.getStringUnitWidth(Date.now().toString()) * 3;
-
-        // Calculate the starting X position for each text element
-        const achievedScoreX = 10; // Left aligned
-        const maturityLevelX = (contentWidth - maturityLevelWidth) / 2; // Center aligned
-        const dateX = contentWidth - dateWidth - 10; // Right aligned
-        doc.setTextColor(headerColor[0], headerColor[1], 0); // Set header text color
-
-        // Add achieved score, maturity level, and date below the header with left, center, and right alignment
-        doc.text(`Maturity Level : ${this.maturityLevel.toString()}`, maturityLevelX, headerY, { align: 'center' });
-        doc.text(`Achieved Score : ${this.achievedScore.toString()}`, achievedScoreX, headerY, { align: 'left' });
-        doc.text(`Date : ${new Date().toLocaleDateString()}`, dateX, headerY, { align: 'right' });
-
-        // Set styles for the table
-        const defaultStyles = {
-          font: 'Arial',
-          fontSize: 12,
-          fontStyle: 'normal',
-          textColor: [0, 0, 0], // black text color
-          overflow: 'linebreak', // overflow method
-          cellPadding: 5, // cell padding (space between content and cell border)
-          valign: 'middle', // vertical alignment
-          halign: 'left', // horizontal alignment
-          fillColor: [255, 255, 255], // background color for the table cells
-          lineWidth: 0.1, // width of table borders
-          lineColor: [0, 0, 0] // color of table borders (black)
+          return marginLineY + 15;
         };
 
-        // Override alignment for "Score" column to be centered
-        const scoreColumnStyle = { ...defaultStyles, halign: 'center' };
+        const addTables = (startY: any) => {
+          let currentY = startY;
 
-        // Set styles for the header row
-        const headerStyles = {
-          fillColor: [200, 200, 200], // background color for the header row
-          textColor: [0, 0, 0], // black text color for header row
-          fontStyle: 'bold', // bold font style for header row
-        };
-        const tableStyles = {
-          // Apply default styles to most columns
-          styles: defaultStyles,
-          // Override styles for "Score" column (index 4)
-          columnStyles: {
-            4: scoreColumnStyle,
+          const defaultStyles = {
+            font: 'Arial',
+            fontSize: 12,
+            fontStyle: 'normal',
+            textColor: [0, 0, 0],
+            overflow: 'linebreak',
+            cellPadding: 5,
+            valign: 'middle',
+            halign: 'left',
+            fillColor: [255, 255, 255],
+            lineWidth: 0.1,
+            lineColor: [0, 0, 0]
+          };
+
+          const scoreColumnStyle = { ...defaultStyles, halign: 'center' };
+          const headerStyles = {
+            fillColor: [200, 200, 200],
+            textColor: [0, 0, 0],
+            fontStyle: 'bold',
+            halign: 'center'
+          };
+          const maturityColor = {
+            font: 'Arial',
+            fontSize: 12,
+            fontStyle: 'bold',
+            textColor: [0, 0, 0],
+            overflow: 'linebreak',
+            cellPadding: 5,
+            valign: 'middle',
+            halign: 'left',
+            fillColor: [255, 255, 255],
+            lineWidth: 0.1,
+            lineColor: [0, 0, 0]
+          };
+
+          // Add the first table
+          doc.setFontSize(14);
+          doc.setFont('', '', 'bold'); // Set font style to bold
+          doc.text(`DevOps Assessment Score`, doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
+          currentY += 10; // Add some space below the title
+          
+          if (this.table1 && this.table1.length) {
+            (doc as any).autoTable({
+              head: [['DevOps Pipeline Practice', 'Score', 'Total Achievable Score']],
+              body: this.table1.map(row => [row.dpp, row.achievedScore, row.totalScore]),
+              startY: currentY,
+              styles: defaultStyles,
+              headStyles: headerStyles,
+            });
+          
+            
+            // Add the new row with totals
+            const maturityRow = ['DevOps Practice Maturity', `${this.devOpsPracticeMaturity.toString()}`]; // Replace with your actual totals
+            (doc as any).autoTable({
+              startY: (doc as any).lastAutoTable.finalY, // Adjust vertical spacing as needed
+              body: [maturityRow],
+              styles: maturityColor,
+             // columnStyles: ['20', '50', ], // Optional: Set column widths if needed
+            });
+            currentY = (doc as any).lastAutoTable.finalY + 15; // update position
           }
+
+          // Add the second table
+
+          const defaultStylesTable2 = {
+            font: 'Arial',
+            fontSize: 12,
+            fontStyle: 'normal',
+            textColor: [0, 0, 0],
+            overflow: 'linebreak',
+            cellPadding: 5,
+            valign: 'middle',
+            halign: 'left',
+            lineWidth: 0.1,
+            lineColor: [0, 0, 0],
+            fillColor: (columnIndex: number) => { // Dynamic function for background color
+              return columnIndex === 0 ? [255, 0, 0] : null; // Red for first column, null for others
+            },
+          };
+          doc.setFontSize(14);
+          doc.setFont('', '', 'bold'); // Set font style to bold
+          doc.text(`Maturity Levels Definition`, doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
+          currentY += 10; // Add some space below the title
+
+
+          if (this.table2 && this.table2.length) {
+            (doc as any).autoTable({
+              head: [['Maturity Level', 'Description', 'Score']],
+              body: this.table2.map(row => [row.ml, row.description, row.score]),
+              startY: currentY,
+              styles: defaultStylesTable2,
+              headStyles: headerStyles,
+            });
+            currentY = (doc as any).lastAutoTable.finalY + 120; // Update position
+          }
+
+          // Check if currentY exceeds page height and add new page if necessary
+          if (currentY > doc.internal.pageSize.getHeight() - 30) {
+            doc.addPage();
+            currentY = 30; // reset position for new page
+          }
+
+          // Add the merged array content after the tables
+          const body: any = [];
+          let previousSection = '';
+          this.mergedArray.forEach((row) => {
+            const { item, identifier, practiceStage, description, value } = row;
+            const currentSection = item;
+            if (currentSection !== previousSection && previousSection !== '') {
+              body.push([{ content: '', colSpan: 5, styles: { fillColor: [173, 216, 230], cellPadding: -1 } }]);
+            }
+            body.push([item, identifier, practiceStage, description, value]);
+            previousSection = currentSection;
+          });
+
+          // Add the third table
+          doc.setFontSize(14);
+          doc.setFont('', '', 'bold'); // Set font style to bold
+          doc.text(`Practice Scores`, doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
+          currentY += 10; // Add some space below the title
+
+          (doc as any).autoTable({
+            head: [this.exportColumns],
+            body: body,
+            startY: currentY,
+            styles: defaultStyles,
+            columnStyles: {
+              4: scoreColumnStyle,
+            },
+            headStyles: headerStyles,
+          });
+
+          return currentY;
         };
 
-        // Mapping over the data array to exclude the 'id' field
-        const body = this.mergedArray.map(({ id, item, identifier, practiceStage, description, value }) => Object.values({ item, identifier, practiceStage, description, value }));
-        const addFooter = () => {
-          const totalPages = 2; // Hardcoded total number of pages
-          const footerHeight = 20; // Height of the footer
+        const addFooter = (totalPages: number) => {
+          const marginLineXStart = 10;
+          const marginLineXEnd = doc.internal.pageSize.getWidth() - 10;
+
           for (let i = 1; i <= totalPages; i++) {
-            doc.setPage(i); // Set current page
-            doc.setFontSize(10);
-            // Calculate the position for page number based on page width and height
+            doc.setPage(i);
             const pageWidth = doc.internal.pageSize.getWidth();
             const pageHeight = doc.internal.pageSize.getHeight();
             const xOffset = 10;
             const yOffset = pageHeight - 10;
-
-            // Set text color to black for page numbers
+            doc.setFontSize(10);
             doc.setTextColor(0);
-
-            doc.text(`Page ${i} of ${totalPages}`, pageWidth - xOffset, pageHeight - footerHeight / 2, { align: 'right' });
-
-            // Add line to footer
-            doc.setLineWidth(0.5); // Set line width
-            doc.setDrawColor(0); // Set line color to black
-            doc.line(marginLineXStart, pageHeight - footerHeight, marginLineXEnd, pageHeight - footerHeight); // Draw line
+            doc.text(`Page ${i} of ${totalPages}`, pageWidth - xOffset, yOffset, { align: 'right' });
+            doc.setLineWidth(0.5);
+            doc.setDrawColor(0);
+            doc.line(marginLineXStart, pageHeight - 20, marginLineXEnd, pageHeight - 20);
           }
         };
 
-        (doc as any).autoTable({
-          head: [this.exportColumns], // Header row
-          body: body, // Table data
-          startY: marginLineY + 5, // Y position to start the table (below the margin line)
-          styles: defaultStyles,
-          columnStyles: {
-            4: scoreColumnStyle,
-          }, // Table styles
-          headStyles: headerStyles, // Header row styles
-          // addPageContent: addFooter // Add footer with page numbers
-        });
+        // Render content to determine total page count
+        const marginLineY = addHeader();
+        addTables(marginLineY);
+        const totalPages = doc.internal.pages.length - 1; // Correct way to get total pages
 
-        doc.save('DevOps_Scores.pdf'); // Save the PDF
+        // Add footers after determining total page count
+        addFooter(totalPages);
+
+
+
+       
+        doc.save( `${this.projectData.buName}_DevOps_Maturity_Report.pdf`);
       });
     });
   }
+
+
+
+
+
+
+
   Exit() {
     // alert('You will lose entire data')
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       data: {
         title: 'Alert !',
         message: 'Please download the PDF before exiting. All data, including saved data, will be lost.',
-        imageSrc : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxYzKaHgJ41PfwP9Yt6nBjxMAWLcSinuBbZJYaF-u8RA&s'
+        imageSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxYzKaHgJ41PfwP9Yt6nBjxMAWLcSinuBbZJYaF-u8RA&s'
       }
     })
     dialogRef.afterClosed().subscribe((result) => {
@@ -254,13 +351,14 @@ export class ReviewComponent implements OnInit {
   }
 
   assignLabel(sum: number) {
+    //Total score = 380
     if (sum >= 22 && sum <= 55) {
       return 'Basic';
-    } else if (sum >= 56 && sum <= 110) {
+    } else if (sum > 55 && sum <= 110) {
       return 'Initial';
-    } else if (sum >= 111 && sum <= 164) {
+    } else if (sum > 110 && sum <= 164) {
       return 'Developing';
-    } else if (sum >= 165 && sum <= 219) {
+    } else if (sum > 164 && sum <= 219) {
       return 'Mature';
     } else if (sum >= 220) {
       return 'Optimized';

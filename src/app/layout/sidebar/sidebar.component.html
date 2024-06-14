@@ -82,6 +82,12 @@
         Enablers
       </mat-list-item>
     </mat-list>
+    <mat-list>
+      <mat-list-item [routerLink]="['/feature2/dashboard']" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        Dashboard
+      </mat-list-item>
+    </mat-list>
 
   </div>
 </mat-nav-list>
