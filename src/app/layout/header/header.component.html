@@ -1,32 +1,17 @@
-<mat-toolbar class="toolbar">
-  <div *ngIf="!dbService.isHomeRoute" mat-icon-button class="example-icon btn" (click)="toggleSidebar()">
-    <i class="fas fa-bars menuIcon"></i>
+<mat-toolbar class="toolbar" fxLayout="row" fxLayoutAlign="space-between center">
+  <div fxFlex="10%">
+    <div *ngIf="!dbService.isHomeRoute" mat-icon-button class="example-icon btn" (click)="toggleSidebar()">
+      <i class="fas fa-bars menuIcon"></i>
+    </div>
   </div>
-  <span class="ms-2 name" [routerLink]="'/home'">DevSecOps-Maturity-Assessment</span>
+  <div fxFlex="80%" fxLayout="row" fxLayoutAlign="center center">
+    <span class="ms-2 name" [routerLink]="'/home'">DevSecOps-Maturity-Assessment</span>
+  </div>
   <span class="example-spacer"></span>
 
-  <!-- <button class="btn btn-primary" *ngIf="dbService.loggedInUserRole == 'Admin'" routerLink="/admin-dashboard" >Admin Dashboard</button> -->
-
-  <!-- <button  [matMenuTriggerFor]="profileMenu" class="profile-button example-icon"  >
-   
-  </button>
- -->
-  <!-- <mat-menu #profileMenu="matMenu">
-    <button mat-menu-item (click)="viewProfile()" class="menu-item">
-      <i class="fas fa-user"   [matTooltip]="'Click to viewProfile'"></i> View Profile
-    </button>
-    <button mat-menu-item  class="menu-item">
-      <i class="fas fa-sign-out-alt" [matTooltip]="'Click to Logout'"  ></i>Logout
-    </button>
-  </mat-menu> -->
-
-  <div *ngIf="!dbService.isHomeRoute"  mat-icon-button (click)="home()" class="btn homeButton example-icon button-hand name">
-   <b>       <mat-icon>home</mat-icon>
-   </b> </div>
-
-    <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>home</mat-icon>
-    </button> -->
-
-
+  <div fxFlex="10%">
+    <div *ngIf="!dbService.isHomeRoute" mat-icon-button (click)="home()" class="btn homeButton example-icon button-hand name">
+      <b><mat-icon>home</mat-icon></b>
+    </div>
+  </div>
 </mat-toolbar>

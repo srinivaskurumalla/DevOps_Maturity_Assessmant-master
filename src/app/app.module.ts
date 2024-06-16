@@ -13,8 +13,6 @@ import { MessageService } from 'primeng/api';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
-import { HomeComponent } from './components/home/home.component';
-
 @NgModule({
   declarations: [
     AppComponent,

@@ -1,33 +1,26 @@
-
-<div class="row m-2 options">
-  <div class="col-3"></div>
-  <div class="col-6">
-    <div class="d-flex">
-      <div class="card m-2" style="width: 18rem;">
-        <img src="./assets/images/survey1.png" alt="">
-       
+<div class="container">
+  <div class="row m-2 options justify-content-center">
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card m-2">
+        <img src="./assets/images/survey1.png" alt="" class="card-img-top">
         <div class="card-body">
-          <h4 class="card-title"><b> DevOps Rediness Survey </b></h4>
-         
-          <button color="primary" mat-raised-button (click)="openSurveyDialog('0ms', '0ms')">DevOps Survey</button>
-
+          <h4 class="card-title"><b>DevOps Readiness Survey</b></h4>
+          <button mat-raised-button color="primary" (click)="openSurveyDialog('0ms', '0ms')">DevOps Survey</button>
         </div>
       </div>
-      <div class="card m-2" style="width: 18rem;">
-        <img src="./assets/images/assessment.jpg" alt="">
-
+    </div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card m-2">
+        <img src="./assets/images/assessment.jpg" alt="" class="card-img-top">
         <div class="card-body">
           <h4 class="card-title"><b>DevSecOps-Maturity-Assessment</b></h4>
-         
-          <button color="primary" mat-raised-button (click)="openDevOpsDialog('0ms', '0ms')">DevOps Assessment</button>
-
+          <button mat-raised-button color="primary" (click)="openDevOpsDialog('0ms', '0ms')">DevOps Assessment</button>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-3"></div>
-
 </div>
+
 <ng-template #surveyFormDialog>
   <h1 class="modal-title fs-5" id="exampleModalLabel">DevOps Assessment Form</h1>
   <div class="modal-body">
@@ -41,12 +34,13 @@
         <input type="text" class="form-control" id="project-name" formControlName="projectName">
       </div>
       <div class="modal-footer">
-        <button  type="button" class="btn btn-secondary me-2" (click)="closeSurveyDialog()">Cancel</button>
-        <button type="submit" [disabled]="!devOpsSurveyForm.valid"  class="btn btn-primary">Go</button>
+        <button type="button" class="btn btn-secondary me-2" (click)="closeSurveyDialog()">Cancel</button>
+        <button type="submit" [disabled]="!devOpsSurveyForm.valid" class="btn btn-primary">Go</button>
       </div>
     </form>
   </div>
 </ng-template>
+
 <ng-template #devOpsAssessmentDialog>
   <h1 class="modal-title fs-5" id="exampleModalLabel">DevOps Assessment Form</h1>
   <div class="modal-body">
@@ -61,9 +55,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary me-2" (click)="closeDevOpsDialog()">Cancel</button>
-        <button type="submit" [disabled]="!devOpsAssessmentForm.valid"  class="btn btn-primary">Go</button>
+        <button type="submit" [disabled]="!devOpsAssessmentForm.valid" class="btn btn-primary">Go</button>
       </div>
     </form>
   </div>
 </ng-template>
-

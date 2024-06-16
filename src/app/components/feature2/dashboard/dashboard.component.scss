@@ -39,3 +39,12 @@ th {
     background-color: rgb(37, 143, 37); 
     // color: white;
 }
+
+@media (max-width: 768px) {
+    .table {
+        width: 100% !important;
+    }
+    .col-width-1, .col-width-2 {
+        width: auto !important;
+    }
+}

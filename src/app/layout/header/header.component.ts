@@ -9,22 +9,23 @@ import { DbService } from 'src/app/services/db.service';
 })
 export class HeaderComponent implements OnInit {
   @Output() sidebarToggle = new EventEmitter<void>();
-  isAnimated = true
-  headerClasses = ''
-  constructor(private router: Router,public dbService:DbService) { }
+  // isAnimated = true
+  // headerClasses = ''
+  constructor(private router: Router, public dbService: DbService) { }
   ngOnInit(): void {
-    if (this.isAnimated) {
-      this.headerClasses = 'gemini-header animated';
-    } else {
-      this.headerClasses = 'gemini-header';
-    }  }
+    // if (this.isAnimated) {
+    //   this.headerClasses = 'gemini-header animated';
+    // } else {
+    //   this.headerClasses = 'gemini-header';
+    // }
+  }
 
   toggleSidebar() {
     this.sidebarToggle.emit();
   }
-home(){
-  sessionStorage.clear()
-  this.router.navigate(['/home'])
-}
+  home() {
+    sessionStorage.clear()
+    this.router.navigate(['/home'])
+  }
 
 }

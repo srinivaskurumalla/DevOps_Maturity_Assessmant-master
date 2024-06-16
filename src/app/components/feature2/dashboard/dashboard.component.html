@@ -1,10 +1,10 @@
 <div class="flex m-4">
-    <i class="fa fa-file-pdf-o" (click)="exportPdf()" [matTooltip]="'Download PDF'"
+    <i class="fa fa-file-pdf-o" onclick="exportpdf()"  [matTooltip]="'Download PDF'"
         style="font-size:30px;color:red"></i>
 
 </div>
 
-<div class="container">
+<div class="container-fluid">
     <table class="styled-table table mt-5 table-bordered w-75 mx-auto">
         <thead>
             <tr>
@@ -36,13 +36,7 @@
         </tbody>
     </table>
     <table class="styled-table table mt-5 table-bordered w-75 mx-auto">
-        <!-- <thead>
-            <tr>
-                <th class="col-width-1">Maturity Level</th>
-                <th class="col-width-2">Description</th>
-                <th class="col-width-3">Score</th>
-            </tr>
-        </thead> -->
+       
         <tbody>
             <tr *ngFor="let tbl of ceTable2; ">
                 <td [ngClass]="{

@@ -139,10 +139,14 @@ export class DashboardComponent implements OnInit {
       this.findPercentage(score, totalScores[index])
     );
 
+    console.log('percentages',achievedPercentages);
+    
     // Get the colors for each bar based on the achieved percentage
     let barColors = achievedPercentages.map(percentage =>
       this.getBarColor(percentage)
     );
+    console.log('barColors',barColors);
+
     new Chart(id, {
 
       type: type,
