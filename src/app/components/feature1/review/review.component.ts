@@ -39,6 +39,7 @@ export class ReviewComponent implements OnInit {
   constructor(private dbService: DbService, private router: Router, private dialog: MatDialog) { }
   //data$ = this.dbService.getAllData(); // Observable returned from service
   ngOnInit(): void {
+    
     this.projectData = this.dbService.projectData
     debugger
     this.table1 = this.dbService.getTable1();
@@ -105,6 +106,10 @@ export class ReviewComponent implements OnInit {
     if (this.mergedArray.length == 0) {
       this.dbService.showWarn('Please choose scores');
       return
+    }
+    if(!this.dbService.imageCaptured){
+      this.dbService.showWarn('Please visit dashboad page atleast once')
+      return;
     }
     import('jspdf').then((jsPDF) => {
       import('jspdf-autotable').then(() => {

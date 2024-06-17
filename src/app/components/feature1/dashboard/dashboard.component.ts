@@ -146,6 +146,7 @@ export class DashboardComponent implements OnInit {
       }).then(canvas => {
         const imageData = canvas.toDataURL('image/png');
         this.dbService.setImageData(imageData);
+        this.dbService.imageCaptured = true
         console.log('screen captured');
       });
     }

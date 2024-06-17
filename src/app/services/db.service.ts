@@ -23,6 +23,7 @@ export class DbService {
   allScores: { item: string, identifier: string, value: number }[] = []
   messageService = inject(MessageService)
 
+  imageCaptured:boolean = false;
   constructor(private router: Router) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
