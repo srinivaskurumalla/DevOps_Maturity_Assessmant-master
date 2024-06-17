@@ -300,7 +300,7 @@ export class DashboardComponent implements OnInit {
           doc.line(15, startY, doc.internal.pageSize.getWidth() - 15, startY); // Draw margin line after the text
 
           const imgX = (doc.internal.pageSize.getWidth() - imgWidth) / 2;
-          const imgY = (doc.internal.pageSize.getHeight() - imageHeight) / 5;
+          const imgY = (doc.internal.pageSize.getHeight() - imageHeight) / 4;
           doc.addImage(contentDataUrl, 'PNG', imgX, imgY, imgWidth, imageHeight);
           doc.addPage();
 
