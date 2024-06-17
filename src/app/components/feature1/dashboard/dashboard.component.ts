@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Chart, registerables } from "node_modules/chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { DbService } from 'src/app/services/db.service';
+import html2canvas from 'html2canvas';
 
 Chart.register(...registerables, ChartDataLabels);
 
@@ -128,8 +129,27 @@ export class DashboardComponent implements OnInit {
     this.dbService.setTable1(this.table1);
     this.dbService.setTable2(this.table2);
     this.RenderChart('bar', 'barchart', this.values, this.totals);
-  }
 
+  }
+  ngAfterViewInit() {
+    this.captureScreenshot();
+  }
+  captureScreenshot() {
+    console.log('screen capturing');
+    const element = document.getElementById('element-to-capture');
+    if (element) {
+      html2canvas(element, {
+        // Specify width and height to ensure the whole element is captured
+        width: element.scrollWidth,
+        height: element.scrollHeight,
+        scale: 2  // Increase scale for better quality
+      }).then(canvas => {
+        const imageData = canvas.toDataURL('image/png');
+        this.dbService.setImageData(imageData);
+        console.log('screen captured');
+      });
+    }
+  }
   findPercentage(achievedScore: number, totalScore: number) {
     return (achievedScore / totalScore) * 100
   }

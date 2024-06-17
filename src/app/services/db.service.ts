@@ -14,13 +14,15 @@ export class DbService {
   private table2: any[] = [];
   isHomeRoute = false;
   projectData: any;
+  imageData: string  | null = null;
+
   // private apiUrl = 'src/assets/db.json';
   isSidebarOpen: boolean = true
   http = inject(HttpClient)
   totalData: any[] = []
   allScores: { item: string, identifier: string, value: number }[] = []
   messageService = inject(MessageService)
-  
+
   constructor(private router: Router) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -76,41 +78,12 @@ export class DbService {
     return this.table2;
   }
 
-  // addData(data: any): Observable<any> {
-  //   debugger
-  //   //const dataWithId = data.map((item, index) => ({ id: index + 1, ...item }));
-  //   return this.http.post<any>(this.apiUrl, data);
-  // }
-  // updateData(data: any, id: number): Observable<any> {
-  //   debugger
-  //   return this.http.put<any>(`${this.apiUrl}/${id}`, data);
 
-  // }
-  // getDataByItemAndIdentifier(name: string): Observable<any[]> {
-  //   return new Observable(observer => {
-  //     this.getAllData().subscribe(
-  //       (data) => {
-  //         this.totalData = data;
-  //         console.log('total data', this.totalData);
-  //         debugger
-  //         // Filter data based on name
-  //         //const filteredData = this.totalData.flatMap(dataArray => dataArray.filter((item: any) => item.item === name));
-  //         const filteredData = this.totalData.filter((item: any) => item.item === name);
-  //         if (filteredData.length > 0) {
-  //           observer.next(filteredData); // Emit filtered data
-  //         } else {
-  //           observer.next([]); // Emit empty array if no matching items are found
-  //         }
-  //         observer.complete(); // Complete the observable
-  //       },
-  //       (error) => {
-  //         console.error('Error fetching data:', error);
-  //         observer.error(error); // Emit error if any
-  //       }
-  //     );
-  //   });
-  // }
-  // getAllData(): Observable<any[]> {
-  //   return this.http.get<any[]>(this.apiUrl);
-  // }
+  setImageData(data: string ) {
+    this.imageData = data;
+  }
+
+  getImageData(): string | null {
+    return this.imageData;
+  }
 }

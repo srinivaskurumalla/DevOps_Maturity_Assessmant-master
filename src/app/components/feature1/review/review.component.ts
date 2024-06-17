@@ -91,7 +91,16 @@ export class ReviewComponent implements OnInit {
   //   });
   // }
 
+  image() {
+    const doc = new jsPDF();
+    const imageData = this.dbService.getImageData();
 
+    if (imageData) {
+      doc.addImage(imageData, 'PNG', 10, 10, 200, 200); // Adjust coordinates and dimensions as needed
+    }
+
+    doc.save('image.pdf')
+  }
   exportPdf() {
     if (this.mergedArray.length == 0) {
       this.dbService.showWarn('Please choose scores');
@@ -188,71 +197,71 @@ export class ReviewComponent implements OnInit {
           };
 
           // Add the first table
-          doc.setFontSize(14);
-          doc.setFont('', '', 'bold'); // Set font style to bold
-          doc.text(`DevOps Maturity Score`, doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
-          currentY += 10; // Add some space below the title
-          
-          if (this.table1 && this.table1.length) {
-            (doc as any).autoTable({
-              head: [['DevOps Pipeline Practice', 'Score', 'Total Achievable Score']],
-              body: this.table1.map(row => [row.dpp, row.achievedScore, row.totalScore]),
-              startY: currentY,
-              styles: defaultStyles,
-              headStyles: headerStyles,
-            });
-          
-            
-            // Add the new row with totals
-            const maturityRow = ['DevOps Practice Maturity', `${this.devOpsPracticeMaturity.toString()}`]; // Replace with your actual totals
-            (doc as any).autoTable({
-              startY: (doc as any).lastAutoTable.finalY + 10, // Adjust vertical spacing as needed
-              body: [maturityRow],
-              styles: maturityColor,
-             // columnStyles: ['20', '50', ], // Optional: Set column widths if needed
-            });
-            currentY = (doc as any).lastAutoTable.finalY + 15; // update position
-          }
+          // doc.setFontSize(14);
+          // doc.setFont('', '', 'bold'); // Set font style to bold
+          // doc.text(`DevOps Maturity Score`, doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
+          // currentY += 10; // Add some space below the title
 
-          // Add the second table
-
-          const defaultStylesTable2 = {
-            font: 'Arial',
-            fontSize: 12,
-            fontStyle: 'normal',
-            textColor: [0, 0, 0],
-            overflow: 'linebreak',
-            cellPadding: 5,
-            valign: 'middle',
-            halign: 'left',
-            lineWidth: 0.1,
-            lineColor: [0, 0, 0],
-            fillColor: (columnIndex: number) => { // Dynamic function for background color
-              return columnIndex === 0 ? [255, 0, 0] : null; // Red for first column, null for others
-            },
-          };
-          doc.setFontSize(14);
-          doc.setFont('', '', 'bold'); // Set font style to bold
-          doc.text(`Maturity Levels Definition`, doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
-          currentY += 10; // Add some space below the title
+          // if (this.table1 && this.table1.length) {
+          //   (doc as any).autoTable({
+          //     head: [['DevOps Pipeline Practice', 'Score', 'Total Achievable Score']],
+          //     body: this.table1.map(row => [row.dpp, row.achievedScore, row.totalScore]),
+          //     startY: currentY,
+          //     styles: defaultStyles,
+          //     headStyles: headerStyles,
+          //   });
 
 
-          if (this.table2 && this.table2.length) {
-            (doc as any).autoTable({
-              head: [['Maturity Level', 'Description', 'Score']],
-              body: this.table2.map(row => [row.ml, row.description, row.score]),
-              startY: currentY,
-              styles: defaultStylesTable2,
-              headStyles: headerStyles,
-            });
-            currentY = (doc as any).lastAutoTable.finalY + 120; // Update position
-          }
+          //   // Add the new row with totals
+          //   const maturityRow = ['DevOps Practice Maturity', `${this.devOpsPracticeMaturity.toString()}`]; // Replace with your actual totals
+          //   (doc as any).autoTable({
+          //     startY: (doc as any).lastAutoTable.finalY + 10, // Adjust vertical spacing as needed
+          //     body: [maturityRow],
+          //     styles: maturityColor,
+          //     // columnStyles: ['20', '50', ], // Optional: Set column widths if needed
+          //   });
+          //   currentY = (doc as any).lastAutoTable.finalY + 15; // update position
+          // }
 
-          // Check if currentY exceeds page height and add new page if necessary
-          if (currentY > doc.internal.pageSize.getHeight() - 30) {
-            doc.addPage();
-            currentY = 30; // reset position for new page
-          }
+          // // Add the second table
+
+          // const defaultStylesTable2 = {
+          //   font: 'Arial',
+          //   fontSize: 12,
+          //   fontStyle: 'normal',
+          //   textColor: [0, 0, 0],
+          //   overflow: 'linebreak',
+          //   cellPadding: 5,
+          //   valign: 'middle',
+          //   halign: 'left',
+          //   lineWidth: 0.1,
+          //   lineColor: [0, 0, 0],
+          //   fillColor: (columnIndex: number) => { // Dynamic function for background color
+          //     return columnIndex === 0 ? [255, 0, 0] : null; // Red for first column, null for others
+          //   },
+          // };
+          // doc.setFontSize(14);
+          // doc.setFont('', '', 'bold'); // Set font style to bold
+          // doc.text(`Maturity Levels Definition`, doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
+          // currentY += 10; // Add some space below the title
+
+
+          // if (this.table2 && this.table2.length) {
+          //   (doc as any).autoTable({
+          //     head: [['Maturity Level', 'Description', 'Score']],
+          //     body: this.table2.map(row => [row.ml, row.description, row.score]),
+          //     startY: currentY,
+          //     styles: defaultStylesTable2,
+          //     headStyles: headerStyles,
+          //   });
+          //   currentY = (doc as any).lastAutoTable.finalY + 120; // Update position
+          // }
+
+          // // Check if currentY exceeds page height and add new page if necessary
+          // if (currentY > doc.internal.pageSize.getHeight() - 30) {
+          //   doc.addPage();
+          //   currentY = 30; // reset position for new page
+          // }
 
           // Add the merged array content after the tables
           const body: any = [];
@@ -308,6 +317,19 @@ export class ReviewComponent implements OnInit {
 
         // Render content to determine total page count
         const marginLineY = addHeader();
+        const imageData = this.dbService.getImageData();
+
+        if (imageData) {
+        
+         // doc.addImage(imageData, 'PNG', 30, 30, 400, 400); // Adjust coordinates and dimensions as needed
+
+          const imgX = (doc.internal.pageSize.getWidth() - 500) / 2;
+          const imgY = (doc.internal.pageSize.getHeight() - 400) / 2;
+          doc.addImage(imageData, 'PNG', imgX, imgY, 500, 400);
+          doc.addPage();
+
+
+        }
         addTables(marginLineY);
         const totalPages = doc.internal.pages.length - 1; // Correct way to get total pages
 
@@ -316,8 +338,8 @@ export class ReviewComponent implements OnInit {
 
 
 
-       
-        doc.save( `${this.projectData.buName}_DevOps_Maturity_Report.pdf`);
+
+        doc.save(`${this.projectData.buName}_DevOps_Maturity_Report.pdf`);
       });
     });
   }

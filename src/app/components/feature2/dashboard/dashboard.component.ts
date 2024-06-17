@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
-
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 interface Column {
   field: string;
   header: string;
@@ -61,12 +62,12 @@ export class DashboardComponent implements OnInit {
     ]
 
     this.ceTable2 = [
-      { status: 'Not Ready', description: 'There are many more challenges to the adoption of DevOps than enablers.',avg:'-4 to -2' },
-      { status: 'Early Days', description: 'There are indications of changes being planned/discussed that will promote enablers and reduce challenges.',avg:'-2 to -0.5' },
-      { status: 'Challenging', description: 'The challenges present in the organization are challenging the positive impact from enablers.' ,avg:'-0.5 to 0.5'},
-      { status: 'Moving in Right Direction', description: 'Enabling initiatives are slightly outweighing the challenges.' ,avg:'0.5 to 1.5'},
-      { status: 'Gaining Momentum', description: 'Planned initiatives are close to completion, and in fact, some have already yielded positive results with enablers overcoming challenges.' ,avg:'1.5 to 2.5'},
-      { status: 'Strong', description: 'There is a culture, an attitude, and an understanding of good practices that can propel DevOps introduction in the organization.',avg:'2.5 above' },
+      { status: 'Not Ready', description: 'There are many more challenges to the adoption of DevOps than enablers.', avg: '-4 to -2' },
+      { status: 'Early Days', description: 'There are indications of changes being planned/discussed that will promote enablers and reduce challenges.', avg: '-2 to -0.5' },
+      { status: 'Challenging', description: 'The challenges present in the organization are challenging the positive impact from enablers.', avg: '-0.5 to 0.5' },
+      { status: 'Moving in Right Direction', description: 'Enabling initiatives are slightly outweighing the challenges.', avg: '0.5 to 1.5' },
+      { status: 'Gaining Momentum', description: 'Planned initiatives are close to completion, and in fact, some have already yielded positive results with enablers overcoming challenges.', avg: '1.5 to 2.5' },
+      { status: 'Strong', description: 'There is a culture, an attitude, and an understanding of good practices that can propel DevOps introduction in the organization.', avg: '2.5 above' },
     ]
     this.enablersAverages = JSON.parse(sessionStorage.getItem('enablersAverage')!)
     this.challengesAverages = JSON.parse(sessionStorage.getItem('challengesAverage')!)
@@ -96,7 +97,7 @@ export class DashboardComponent implements OnInit {
       const theme = element.theme;
       const matchingAverage = this.challengesAverages?.[theme]; // Access average using theme as property
 
-      if (matchingAverage ) {
+      if (matchingAverage) {
         element.challengeAverage = matchingAverage; // Assuming average is in a property named "average"
       } else {
         element.challengeAverage = 0; // Or set a default value if no matching average is found
@@ -107,15 +108,15 @@ export class DashboardComponent implements OnInit {
   }
 
   exportPdf() {
-    if ( this.challengesScore?.length == 0 || this.challengesScore == null ) {
+    if (this.challengesScore?.length == 0 || this.challengesScore == null) {
       this.dbService.showWarn('Please choose challenges');
-      return
+      return;
     }
-    if (this.enablerScore?.length == 0 || this.enablerScore == null ) {
+    if (this.enablerScore?.length == 0 || this.enablerScore == null) {
       this.dbService.showWarn('Please choose enablers');
-      return
+      return;
     }
-   
+
     import('jspdf').then((jsPDF) => {
       import('jspdf-autotable').then(() => {
         const doc = new jsPDF.default('p', 'px', 'a4');
@@ -123,17 +124,16 @@ export class DashboardComponent implements OnInit {
         const headerHeight = 30;
         const headerColor = [0, 0, 255];
 
-        const addHeader = () => {
-          // Add header
+        const addHeader = (doc: jsPDF, yPos: number) => {
           doc.setFontSize(16);
           doc.setTextColor(headerColor[0], headerColor[1], headerColor[2]);
-          doc.text(headerText, doc.internal.pageSize.getWidth() / 2, headerHeight, { align: 'center' });
+          doc.text(headerText, doc.internal.pageSize.getWidth() / 2, yPos, { align: 'center' });
 
           const subHeaderText = `${this.projectData.projectName}`;
           const subHeaderFontSize = 12;
           doc.setFontSize(subHeaderFontSize);
           doc.setTextColor(0, 0, 0);
-          const subHeaderTextY = headerHeight + subHeaderFontSize + 5;
+          const subHeaderTextY = yPos + subHeaderFontSize + 5;
           const subHeaderTextWidth = doc.getTextWidth(subHeaderText);
           const startX = (doc.internal.pageSize.getWidth() - subHeaderTextWidth) / 2;
           const startY = subHeaderTextY + 2;
@@ -154,23 +154,16 @@ export class DashboardComponent implements OnInit {
 
           const contentWidth = doc.internal.pageSize.getWidth();
           doc.setFontSize(11);
-          // const achievedScoreWidth = doc.getStringUnitWidth(this.achievedScore.toString()) * 3;
-          // const maturityLevelWidth = doc.getStringUnitWidth(this.devOpsPracticeMaturity.toString()) * 3;
-          const dateWidth = doc.getStringUnitWidth(Date.now().toString()) * 3;
-          const achievedScoreX = 10;
-          // const maturityLevelX = (contentWidth - maturityLevelWidth) / 2;
+          const dateWidth = doc.getStringUnitWidth(new Date().toLocaleDateString()) * 3;
           const dateX = contentWidth - dateWidth - 10;
           doc.setTextColor(headerColor[0], headerColor[1], 0);
-          // doc.text(`Maturity Level : ${this.devOpsPracticeMaturity.toString()}`, maturityLevelX, headerY, { align: 'center' });
-          // doc.text(`Achieved Score : ${this.achievedScore.toString()}`, achievedScoreX, headerY, { align: 'left' });
           doc.text(`Date : ${new Date().toLocaleDateString()}`, dateX, headerY, { align: 'right' });
 
           return marginLineY + 15;
         };
 
-        const addTables = (startY: any) => {
+        const addTables = (doc: jsPDF, startY: number) => {
           let currentY = startY;
-
           const defaultStyles = {
             font: 'Arial',
             fontSize: 12,
@@ -185,7 +178,6 @@ export class DashboardComponent implements OnInit {
             lineColor: [0, 0, 0]
           };
 
-          const scoreColumnStyle = { ...defaultStyles, halign: 'center' };
           const headerStyles = {
             fillColor: [200, 200, 200],
             textColor: [0, 0, 0],
@@ -193,68 +185,19 @@ export class DashboardComponent implements OnInit {
             halign: 'center'
           };
 
-
-            // Add the first table
-            doc.setFontSize(14);
-            doc.setFont('', '', 'bold'); // Set font style to bold
-            doc.text(`DevOps Readiness Score`, doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
-            currentY += 10; // Add some space below the title
-            if (this.ceTable1 && this.ceTable1.length) {
-              (doc as any).autoTable({
-                head: [['Theme', 'Challenges', 'Enablers', 'Readiness Score', 'Maturity Level']],
-                body: this.ceTable1.map(row => [row.theme, row.challengeAverage, row.enablersAverage, (row.enablersAverage-row.challengeAverage).toFixed(2), this.assignStatus(row.enablersAverage-row.challengeAverage)]),
-                startY: currentY,
-                styles: defaultStyles,
-                headStyles: headerStyles,
-              });
-              currentY = (doc as any).lastAutoTable.finalY + 15; // update position
-            }
-  
-            // Add the second table
-  
-           
-            doc.setFontSize(14);
-            doc.setFont('', '', 'bold'); // Set font style to bold
-            doc.text(`Maturity Levels Definition`, doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
-            currentY += 10; // Add some space below the title
-  
-            //const columnWidths = [100, 200, 100]; // Adjust widths as needed
-            const avgColumnStyle = { ...defaultStyles, innerWidth:100 };
-
-            if (this.ceTable2 && this.ceTable2.length) {
-              (doc as any).autoTable({
-                head: [['Legend','Score Range','Description']],
-                body: this.ceTable2.map(row => [row.status, row.avg,row.description]),
-                startY: currentY,
-                styles: defaultStyles,
-                headStyles: headerStyles,
-                columnStyles: avgColumnStyle, // Add column width definition
-
-              });
-              currentY = (doc as any).lastAutoTable.finalY + 140; // Update position
-            }
-
-            // Check if currentY exceeds page height and add new page if necessary
-           // Check if there's enough space for the fourth table on the current page
+          // Add the third table (Challenges Report)
           const availableHeight1 = doc.internal.pageSize.getHeight() - currentY - 30; // Account for margins and footer
-          const estimatedSecondTableHeight1 = calculateThirdTableHeight(this.enablerScore); // Call a function to estimate the height
-          function calculateThirdTableHeight(data: any[]) {
-            // Implement logic to estimate the height of the second table based on data length, font size, etc.
-            // This is a placeholder, replace with your actual calculation
-            return data.length * 15 + 50; // Adjust the formula as needed
-          }
-          if (estimatedSecondTableHeight1 > availableHeight1) {
-            // Second table won't fit, move to next page
+          const estimatedThirdTableHeight1 = this.challengesScore.length * 15 + 50;
+          if (estimatedThirdTableHeight1 > availableHeight1) {
             doc.addPage();
             currentY = 30; // Reset position for new page
           }
-          // Add the third table
           doc.setFontSize(14);
           doc.setFont('', '', 'bold'); // Set font style to bold
           doc.text(`Challenges Report`, doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
           currentY += 10; // Add some space below the title
 
-          const challengesBody: any = [];
+          const challengesBody: any[][] = [];
           let previousSection = '';
           this.challengesScore.forEach((row) => {
             const { theme, challenge, someOfTheThingsYouMightHaveSee, selectedOption } = row;
@@ -268,7 +211,6 @@ export class DashboardComponent implements OnInit {
           if (this.challengesScore && this.challengesScore.length) {
             (doc as any).autoTable({
               head: [['Theme', 'Challenge', 'Some of the things you might see', 'Selected']],
-              //body: this.challengesScore.map((row: { theme: any; challenge: any; someOfTheThingsYouMightHaveSee: any; selectedOption: any; }) => [row.theme, row.challenge, row.someOfTheThingsYouMightHaveSee, row.selectedOption]),
               body: challengesBody,
               startY: currentY,
               styles: defaultStyles,
@@ -277,18 +219,10 @@ export class DashboardComponent implements OnInit {
             currentY = (doc as any).lastAutoTable.finalY + 15; // update position
           }
 
-          // Add the fourth table
-
-          // Check if there's enough space for the fourth table on the current page
-          const availableHeight = doc.internal.pageSize.getHeight() - currentY - 30; // Account for margins and footer
-          const estimatedSecondTableHeight = calculateSecondTableHeight(this.enablerScore); // Call a function to estimate the height
-          function calculateSecondTableHeight(data: any[]) {
-            // Implement logic to estimate the height of the second table based on data length, font size, etc.
-            // This is a placeholder, replace with your actual calculation
-            return data.length * 15 + 50; // Adjust the formula as needed
-          }
-          if (estimatedSecondTableHeight > availableHeight) {
-            // Second table won't fit, move to next page
+          // Add the fourth table (Enablers Report)
+          const availableHeight2 = doc.internal.pageSize.getHeight() - currentY - 30; // Account for margins and footer
+          const estimatedFourthTableHeight = this.enablerScore.length * 15 + 50;
+          if (estimatedFourthTableHeight > availableHeight2) {
             doc.addPage();
             currentY = 30; // Reset position for new page
           }
@@ -297,7 +231,7 @@ export class DashboardComponent implements OnInit {
           doc.text(`Enablers Report`, doc.internal.pageSize.getWidth() / 2, currentY, { align: 'center' });
           currentY += 20; // Add some space below the title
 
-          const enablersBody: any = [];
+          const enablersBody: any[][] = [];
           let previousSection1 = '';
           this.enablerScore.forEach((row) => {
             const { theme, challenge, someOfTheThingsYouMightSee, selectedOption } = row;
@@ -312,19 +246,18 @@ export class DashboardComponent implements OnInit {
           if (this.enablerScore && this.enablerScore.length) {
             (doc as any).autoTable({
               head: [['Theme', 'Challenge', 'Some of the things you might see', 'Selected']],
-              //body: this.enablerScore.map((row: { theme: any; enabler: any; someOfTheThingsYouMightSee: any; selectedOption: any; }) => [row.theme, row.enabler, row.someOfTheThingsYouMightSee, row.selectedOption]),
-              body:enablersBody,
+              body: enablersBody,
               startY: currentY,
               styles: defaultStyles,
               headStyles: headerStyles,
             });
-            currentY = (doc as any).lastAutoTable.finalY + 120; // Update position
+            currentY = (doc as any).lastAutoTable.finalY + 15; // Update position
           }
 
           return currentY;
         };
 
-        const addFooter = (totalPages: number) => {
+        const addFooter = (doc: jsPDF, totalPages: number) => {
           const marginLineXStart = 10;
           const marginLineXEnd = doc.internal.pageSize.getWidth() - 10;
 
@@ -343,40 +276,93 @@ export class DashboardComponent implements OnInit {
           }
         };
 
-        // Render content to determine total page count
-        const marginLineY = addHeader();
-        addTables(marginLineY);
-        const totalPages = doc.internal.pages.length - 1; // Correct way to get total pages
+        // Capture the content as an image
+        const data = document.getElementById('contentToConvert');
+        html2canvas(data!).then((canvas) => {
+          const imgWidth = 450;
+          const imageHeight = canvas.height * imgWidth / canvas.width;
+          const contentDataUrl = canvas.toDataURL('image/png');
+          // Add text and draw margin line
+          doc.text(`${this.projectData.buName} Survey Report`, doc.internal.pageSize.getWidth() / 2, 30, { align: 'center' });
+         
+          doc.setFontSize(11);
+          const contentWidth = doc.internal.pageSize.getWidth();
+          const headerY = 45;
 
-        // Add footers after determining total page count
-        addFooter(totalPages);
+          const dateWidth = doc.getStringUnitWidth(new Date().toLocaleDateString()) * 3;
+          const dateX = contentWidth - dateWidth - 10;
+          doc.setTextColor(headerColor[0], headerColor[1], 0);
+          doc.text(`Date : ${new Date().toLocaleDateString()}`, dateX, headerY, { align: 'right' });
 
+          const startY = 55; // Adjust startY as needed for spacing
+          doc.setLineWidth(0.5);
+          doc.setDrawColor(0);
+          doc.line(15, startY, doc.internal.pageSize.getWidth() - 15, startY); // Draw margin line after the text
 
+          const imgX = (doc.internal.pageSize.getWidth() - imgWidth) / 2;
+          const imgY = (doc.internal.pageSize.getHeight() - imageHeight) / 5;
+          doc.addImage(contentDataUrl, 'PNG', imgX, imgY, imgWidth, imageHeight);
+          doc.addPage();
 
+          // Clear existing content and add the image to the first and second pages
+          // doc.addImage(contentDataUrl, 'PNG', 0, 0, imgWidth, imageHeight);
+          // doc.addPage();
 
-        doc.save(`${this.projectData.buName}_Survey_Report.pdf`);
+          // Add header and tables starting from the second page
+          const marginLineY = addHeader(doc, 30);
+
+          addTables(doc, marginLineY);
+          //doc.addPage();
+
+          // Add image to the last page
+
+          const totalPages = doc.internal.pages.length - 1; // Correct way to get total pages
+
+          // Add footers after determining total page count
+          addFooter(doc, totalPages);
+
+          doc.save(`${this.projectData.buName}_Survey_Report.pdf`);
+        });
       });
     });
   }
 
-assignStatus(score:number):string{
-  if(score < -2 ){
-    return 'Not Ready'
+
+
+  pdf() {
+    console.log('convert');
+    const data = document.getElementById('contentToConvert');
+    html2canvas(data!).then((canvas: any) => {
+      const imgWidth = 208;
+      const pageHeight = 295;
+      const imageHeight = canvas.height * imgWidth / canvas.width;
+      const heightLeft = imageHeight;
+
+      const contentDataUrl = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const position = 0;
+      pdf.addImage(contentDataUrl, 'PNG', 0, position, imgWidth, imageHeight);
+      pdf.save('Screen.pdf');
+    });
   }
-  else if(score >= -2 && score < -0.5){
-    return 'Early Days'
+  assignStatus(score: number): string {
+    if (score < -2) {
+      return 'Not Ready'
+    }
+    else if (score >= -2 && score < -0.5) {
+      return 'Early Days'
+    }
+    else if (score >= -0.5 && score < 0.5) {
+      return 'Challenging'
+    }
+    else if (score >= 0.5 && score < 1.5) {
+      return 'Moving in Right Direction'
+    }
+    else if (score >= 1.5 && score < 2.5) {
+      return 'Gaining Momentum'
+    }
+    else {
+      return 'Strong'
+    }
   }
-  else if(score >= -0.5 && score < 0.5){
-    return 'Challenging'
-  }
-  else if(score >= 0.5 && score < 1.5){
-    return 'Moving in Right Direction'
-  }
-  else if(score >= 1.5 && score < 2.5){
-    return 'Gaining Momentum'
-  }
-  else {
-    return 'Strong'
-  }
-}
 }

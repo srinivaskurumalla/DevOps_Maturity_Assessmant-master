@@ -3,23 +3,25 @@
         style="font-size:30px;color:red"></i>
 
 </div>
+<div id="contentToConvert">
+    <div class="container-fluid">
+        <h2>DevOps Readiness Score</h2>
 
-<div class="container-fluid">
-    <table class="styled-table table mt-5 table-bordered w-75 mx-auto">
-        <thead>
-            <tr>
-                <th>Theme</th>
-                <th>Challenges</th>
-                <th>Enablers</th>
-                <th>Readiness Score</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let tbl of ceTable1">
-                <td>{{tbl.theme}}</td>
-                <td>{{tbl.challengeAverage}}</td>
-                <td>{{tbl.enablersAverage}}</td>
-                <td [ngClass]="{
+        <table class="styled-table table mt-2 table-bordered w-75 mx-auto">
+            <thead>
+                <tr class="text-center">
+                    <th>Theme</th>
+                    <th>Challenges</th>
+                    <th>Enablers</th>
+                    <th>Readiness Score</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <tr *ngFor="let tbl of ceTable1">
+                    <td class="text-start">{{tbl.theme}}</td>
+                    <td>{{tbl.challengeAverage}}</td>
+                    <td>{{tbl.enablersAverage}}</td>
+                    <td [ngClass]="{
                     'NotReady': tbl.enablersAverage - tbl.challengeAverage < -2,
                     'EarlyDays': tbl.enablersAverage - tbl.challengeAverage >= -2 && tbl.enablersAverage - tbl.challengeAverage < -0.5,
                     'Challenging': tbl.enablersAverage - tbl.challengeAverage >= -0.5 && tbl.enablersAverage - tbl.challengeAverage < 0.5,
@@ -27,19 +29,27 @@
                     'GM': tbl.enablersAverage - tbl.challengeAverage >= 1.5 && tbl.enablersAverage - tbl.challengeAverage < 2.5,
                     'Strong': tbl.enablersAverage - tbl.challengeAverage >= 2.5
                   }">
-                    {{ (tbl.enablersAverage - tbl.challengeAverage).toFixed(2) }}
-                </td>
+                        {{ (tbl.enablersAverage - tbl.challengeAverage).toFixed(2) }}
+                    </td>
 
 
-            </tr>
+                </tr>
 
-        </tbody>
-    </table>
-    <table class="styled-table table mt-5 table-bordered w-75 mx-auto">
-       
-        <tbody>
-            <tr *ngFor="let tbl of ceTable2; ">
-                <td [ngClass]="{
+            </tbody>
+        </table>
+        <h2>Maturity Level Definition</h2>
+
+        <table class="styled-table table mt-2 table-bordered w-75 mx-auto">
+            <thead>
+                <tr class="text-center">
+                    <th>Maturity Level</th>
+                    <th>Score Range</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <tr *ngFor="let tbl of ceTable2; ">
+                    <td [ngClass]="{
                     'NotReady': tbl.status === 'Not Ready',
                     'EarlyDays': tbl.status === 'Early Days',
                     'Challenging': tbl.status === 'Challenging',
@@ -50,9 +60,11 @@
 
 
 
-                <td class="col-width-2">{{tbl.description}}</td>
-            </tr>
+                    <td class="col-width-1 ">{{tbl.avg}}</td>
+                    <td class="col-width-2 text-start">{{tbl.description}}</td>
+                </tr>
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>

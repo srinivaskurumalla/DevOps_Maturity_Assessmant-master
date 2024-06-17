@@ -46,7 +46,9 @@ mat-list mat-list-item {
 mat-list {
     padding-top: 0;
 }
-
+i{
+    color: white;
+}
 @media (max-width: 768px) {
     .sidebar {
         display: none;
