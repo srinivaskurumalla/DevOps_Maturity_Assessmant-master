@@ -347,6 +347,8 @@ export class ReviewComponent implements OnInit {
         doc.save(`${this.projectData.buName}_DevOps_Maturity_Report.pdf`);
       });
     });
+
+    this.dbService.showSuccess('Downloading!')
   }
 
 

@@ -325,6 +325,8 @@ export class DashboardComponent implements OnInit {
         });
       });
     });
+    this.dbService.showSuccess('Downloading!')
+
   }
 
 
