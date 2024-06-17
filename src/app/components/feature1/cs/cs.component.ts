@@ -87,6 +87,8 @@ updateSelectedValues(selectedValue: { id: number, practiceStage: string, item: s
 
 }
 saveAll() {
+  this.dbService.imageCaptured = false;
+
   // You can implement the logic to save all selected values here
   console.log('All selected values in cs:', this.selectedValues);
   const { buName, projectName } = this.projectData;

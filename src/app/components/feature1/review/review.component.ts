@@ -108,7 +108,7 @@ export class ReviewComponent implements OnInit {
       return
     }
     if(!this.dbService.imageCaptured){
-      this.dbService.showWarn('Please visit dashboad page atleast once')
+      this.dbService.showWarn('Please visit dashboad page after saving data')
       return;
     }
     import('jspdf').then((jsPDF) => {

@@ -101,6 +101,8 @@ export class ContinuousIntegrationComponent implements OnInit {
   }
 
   saveAll() {
+    this.dbService.imageCaptured = false;
+
     // You can implement the logic to save all selected values here
     console.log('All selected values in ci:', this.selectedValues);
     const { buName, projectName } = this.projectData;
