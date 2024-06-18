@@ -1,39 +1,49 @@
+
+
 th {
     background-color: rgb(37, 47, 138) !important;
     color: white;
-    font-size:small;
+    font-size: small;
     font-weight: 300;
 }
+
 .bold {
     font-weight: bold;
 }
+
 .col-width-1 {
-    width:80px !important; 
+    width: 80px !important;
 }
+
 .col-width-2 {
-    width: 200px !important; 
+    width: 200px !important;
 }
+
 .col-width-3 {
-    width: 60px !important; 
+    width: 60px !important;
 }
 
 .Basic {
-    background-color: red; 
+    background-color: red;
     color: white;
 }
+
 .Initial {
-    background-color: orange; 
+    background-color: orange;
     color: white;
 }
+
 .Developing {
-    background-color: yellow; 
+    background-color: yellow;
     color: black;
 }
+
 .Mature {
     background-color: lightgreen;
     color: black;
 }
+
 .Optimized {
-    background-color: green; 
+    background-color: green;
     color: white;
 }
