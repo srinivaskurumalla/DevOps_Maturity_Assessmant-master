@@ -326,7 +326,6 @@ export class ReviewComponent implements OnInit {
 
         if (imageData) {
         
-         // doc.addImage(imageData, 'PNG', 30, 30, 400, 400); // Adjust coordinates and dimensions as needed
 
           const imgX = (doc.internal.pageSize.getWidth() - 500) / 2;
           const imgY = (doc.internal.pageSize.getHeight() - 400) / 2;
@@ -335,6 +334,7 @@ export class ReviewComponent implements OnInit {
 
 
         }
+        addHeader();
         addTables(marginLineY);
         const totalPages = doc.internal.pages.length - 1; // Correct way to get total pages
 
